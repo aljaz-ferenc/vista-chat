@@ -31,7 +31,7 @@ app.use(`/api/v1/users`, userRouter)
 app.use(`/api/v1/chats`, chatRouter)
 app.use(`/api/v1/auth`, authRouter)
 
-const PORT = process.env.PORT
+const PORT = process.env.PORT || 3000
 
 const server = app.listen(PORT, () => {
     console.log(`Listening on port ${PORT}`)
