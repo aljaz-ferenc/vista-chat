@@ -23,8 +23,8 @@ export default function Messages() {
   const [input, setInput] = useState("");
   const [isLoadingBatch, setIsLoadingBatch] = useState(false);
   const [emojiPickerIsOpen, setEmojiPickerIsOpen] = useState(false);
-  const [isTyping, setIsTyping] = useState(false)
-  const [otherIsTyping, setOtherIsTyping] = useState(false)
+  const [isTyping, setIsTyping] = useState(false);
+  const [otherIsTyping, setOtherIsTyping] = useState(false);
   const {
     user: thisUser,
     resetCurrentChat,
@@ -43,8 +43,8 @@ export default function Messages() {
   const { chatId } = useParams();
   const chat = thisUser?.chats.find((chat) => chat?._id === chatId);
   const otherUser = chat?.users.find((u) => u?._id !== thisUser.id);
-  const timerRef = useRef()
-  const firstRenderRef = useRef(true)
+  const timerRef = useRef();
+  const firstRenderRef = useRef(true);
 
   useEffect(() => {
     updateChat(chatId);
@@ -97,7 +97,7 @@ export default function Messages() {
 
   useEffect(() => {
     if (!messagesElementRef.current) return;
-    setIsTyping(false)
+    setIsTyping(false);
     messagesElementRef.current.scrollTo({
       top:
         messagesElementRef.current.scrollHeight -
@@ -106,45 +106,57 @@ export default function Messages() {
     });
   }, [chat, messagesElementRef.current]);
 
-
   useEffect(() => {
-    if(!input) return
-    if(firstRenderRef.current){
-      firstRenderRef.current = false
-      return
+    if (!input) return;
+    if (firstRenderRef.current) {
+      firstRenderRef.current = false;
+      return;
     }
 
-    setIsTyping(true)
-    
-    timerRef.current = setTimeout(() => {
-      setIsTyping(false)
+    setIsTyping(true);
 
-    }, 1000)
+    timerRef.current = setTimeout(() => {
+      setIsTyping(false);
+    }, 1000);
 
     return () => {
-      clearTimeout(timerRef.current)
-    }
-  }, [input])
+      clearTimeout(timerRef.current);
+    };
+  }, [input]);
 
   useEffect(() => {
-    if(!thisUser.socket) return
+    if (!thisUser.socket) return;
 
-    if(isTyping){
-      thisUser.socket.emit('isTyping', true, thisUser.id, otherUser._id, chat._id)
+    if (isTyping) {
+      thisUser.socket.emit(
+        "isTyping",
+        true,
+        thisUser.id,
+        otherUser._id,
+        thisUser.currentChat
+      );
     }
-    if(!isTyping){
-      thisUser.socket.emit('isTyping', false, thisUser.id, otherUser._id, chat._id)
+    if (!isTyping) {
+      thisUser.socket.emit(
+        "isTyping",
+        false,
+        thisUser.id,
+        otherUser._id,
+        thisUser.currentChat
+      );
     }
-  }, [isTyping])
+  }, [isTyping]);
 
   useEffect(() => {
-    if(!thisUser.socket) return
+    if (!thisUser.socket) return;
 
-    thisUser.socket.on('isTyping', bool => {
-     setOtherIsTyping(bool)
-    })
-  }, [thisUser.socket])
-
+    thisUser.socket.on("isTyping", (chatId, bool) => {
+      if (thisUser.currentChat === chatId){
+        console.log(otherUser.name)
+        setOtherIsTyping(bool);
+      }
+    });
+  }, [thisUser.socket, thisUser.currentChat, otherUser]);
 
   async function handleSendMessage(e) {
     e.preventDefault();
@@ -155,19 +167,18 @@ export default function Messages() {
       imagesArr = await sendImages(images, chatId);
     }
 
-    let filesArr = []
-    if(files.length > 0){
-      filesArr = await sendFiles(files, chatId)
+    let filesArr = [];
+    if (files.length > 0) {
+      filesArr = await sendFiles(files, chatId);
     }
 
-    sendMessage(input, thisUser.id, chatId, imagesArr, filesArr)
-      .then(res => {
-          setImages([]);
-          setFiles([])
-          setThumbnails([]);
-          setInput("");
-          console.log('message sent')
-      })
+    sendMessage(input, thisUser.id, chatId, imagesArr, filesArr).then((res) => {
+      setImages([]);
+      setFiles([]);
+      setThumbnails([]);
+      setInput("");
+      console.log("message sent");
+    });
   }
 
   function handleUploadImage(e) {
@@ -180,18 +191,17 @@ export default function Messages() {
   }
 
   function handleUploadFile(e) {
-    const files = Array.from(e.target.files)
-    setFiles(prev => [...prev, ...files]);
+    const files = Array.from(e.target.files);
+    setFiles((prev) => [...prev, ...files]);
   }
 
-  function handleRemoveFile(fileId){
-    setFiles(prev => prev.filter(file => file.id !== fileId))
+  function handleRemoveFile(fileId) {
+    setFiles((prev) => prev.filter((file) => file.id !== fileId));
   }
 
   function handleSelectEmoji(e) {
     setInput((prev) => `${prev} ${e.emoji}`);
   }
-
 
   useEffect(() => {
     const handleClickOutside = (e) => {
@@ -222,7 +232,7 @@ export default function Messages() {
               {chat && chat.users.length === 2 ? (
                 <div className="user-info" key={otherUser._id}>
                   <h2>{otherUser.name}</h2>
-                  <Avatar size={'10rem'} config={otherUser.avatar} />
+                  <Avatar size={"10rem"} config={otherUser.avatar} />
                   <p>
                     This is the beginning of your conversation with{" "}
                     {otherUser.name}
@@ -247,10 +257,9 @@ export default function Messages() {
                     users={chat.users}
                     key={msg._id}
                   />
-                  );
-                })}
+                );
+              })}
           </div>
-            
         </div>
       )}
       {thumbnails.length > 0 && (
@@ -270,9 +279,13 @@ export default function Messages() {
         <div className="files">
           {files.map((file, i) => (
             <div key={file.name}>
-              <AiOutlineFile size={50}/>
+              <AiOutlineFile size={50} />
               <span>{file.name}</span>
-              <IoIosCloseCircleOutline size={25} onClick={() => handleRemoveFile(file.id)} className="remove-btn"/>
+              <IoIosCloseCircleOutline
+                size={25}
+                onClick={() => handleRemoveFile(file.id)}
+                className="remove-btn"
+              />
             </div>
           ))}
         </div>
@@ -332,7 +345,9 @@ export default function Messages() {
             <EmojiPicker onEmojiClick={handleSelectEmoji} />
           </div>
         )}
-        {otherIsTyping && <p className="is-typing">{otherUser.name} is typing...</p>}
+        {otherIsTyping && (
+          <p className="is-typing">{otherUser.name} is typing...</p>
+        )}
       </form>
     </div>
   );

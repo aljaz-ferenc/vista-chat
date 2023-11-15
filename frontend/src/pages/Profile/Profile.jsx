@@ -4,6 +4,7 @@ import "./Profile.scss";
 import { updateUser } from "../../api/api";
 import { genConfig } from "react-nice-avatar";
 import Avatar from "../../components/Avatar/Avatar";
+import { formatDate } from "../../utils/formatTime";
 
 export default function Profile() {
   const { user, updateUser: updateUserContext } = useUser();
@@ -41,7 +42,7 @@ export default function Profile() {
     if (!user.name) return;
     setName(user.name);
     setEmail(user.email);
-    setBirthDate(user.birthDate || "");
+    setBirthDate(formatDate(user.birthDate) || null);
     setPhone(user.phone || "");
     setWork(user.work || "");
     setEducation(user.education || "");

@@ -19,7 +19,7 @@ mongoose.connect(DB).then(() => console.log('Databse connected successfully'))
 const app = express()
 
 app.use(cors({
-    origin: process.env.CLIENT_URL,
+    origin: [process.env.CLIENT_URL, 'http://localhost:5173'],
     credentials: true,
 }))
 app.use(cookieParser())
@@ -37,29 +37,37 @@ const server = app.listen(port, () => {
 
 const io = socketio(server, {
     cors: {
-        origin: process.env.CLIENT_URL,
-        timeout: 10000
+      origin: [process.env.CLIENT_URL, 'http://localhost:5173'],
+    //   origin: 'http://localhost:5173',
+      methods: ['GET', 'POST', 'DELETE', 'PATCH'],
+      credentials: true,
     },
-})
+  });
 
 io.on('connect', (socket) => {
     io.emit('connectedUsers', connectedUsers.map(u =>u.id))
+    console.log(connectedUsers, '50')
     
     socket.on('disconnect', () => {
-        const user = connectedUsers.find(user => user.socketId === socket.id)
+        console.log('disconnected socket: ', socket.id)
+        const user = connectedUsers.find(user => user.socketId === socket?.id)
+        if(!user){
+            io.emit('connectedUsers', connectedUsers.map(u =>u.id))
+            return
+        }
+
         connectedUsers = connectedUsers.filter(user => user.socketId !== socket.id)
+        console.log(connectedUsers, '54')
         if(user){
             io.emit('connectedUsers', connectedUsers.map(u =>u.id))
         }
     })
     
     socket.on('loginUser', (user) => {
-        console.log(user)
         connectedUsers = connectedUsers.filter(u => u.id !==user.id)
-      
-            connectedUsers.push(user)
-            io.emit('connectedUsers', connectedUsers.map(u =>u.id))
-            console.log('connectedUsers: ', connectedUsers)
+        connectedUsers.push(user)
+        io.emit('connectedUsers', connectedUsers.map(u =>u.id))
+        console.log(connectedUsers, '66')
         
     })
     socket.on('getConnectedUsers', (ack) => {
@@ -71,7 +79,7 @@ io.on('connect', (socket) => {
 
         if(!receiver) return
 
-        io.to(receiver.socketId).emit('isTyping', bool)
+        io.to(receiver.socketId).emit('isTyping', chatId, bool)
     })
 })
 

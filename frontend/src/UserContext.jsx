@@ -6,8 +6,10 @@ import {
   useState,
 } from "react";
 import { getChatById } from "./api/api";
-
+import { io } from "socket.io-client";
 const UserContext = createContext();
+const serverUrl = import.meta.env.VITE_SERVER_URL || 'http://localhost:3000'
+// const socket = io('http://localhost:3000', {autoConnect:true})
 
 const initialState = {
   name: "",
@@ -85,11 +87,20 @@ function reducer(state, action) {
         ...state,
         connectedUsers: action.payload
       }
+    case 'socket/set':
+      return {
+        ...state,
+        socket: action.payload
+      }
   }
 }
 
 export default function UserContextProvider({ children }) {
   const [user, dispatch] = useReducer(reducer, initialState);
+
+  function setSocket(socket){
+    dispatch({type: 'socket/set', payload: socket})
+  }
 
   function updateUser(userData) {
     dispatch({ type: "update/user", payload: userData });
@@ -132,6 +143,11 @@ export default function UserContextProvider({ children }) {
     }
   }
 
+  useEffect(() => {
+    if(user.socket) return
+    setSocket(io(serverUrl, {autoConnect:true}))
+  }, [user.socket])
+
 useEffect(() => {
   if (!user.socket) return;
   user.socket.emit('getConnectedUsers', (connectedUsers) => {
@@ -143,7 +159,6 @@ useEffect(() => {
 
   useEffect(() => {
     if (!user.socket) return;
-
 
     user.socket.on("newMessage", (chatId) => {
       console.log("context newMessage event");
@@ -182,6 +197,7 @@ useEffect(() => {
         updateReadStatus,
         setCurrentChat,
         resetCurrentChat,
+        setSocket
       }}
     >
       {children}

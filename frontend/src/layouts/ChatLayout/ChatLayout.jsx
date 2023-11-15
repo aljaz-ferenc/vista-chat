@@ -16,52 +16,61 @@ import Notification from "../../components/Notification/Notification";
 import { authenticateUser, getChatById, logoutUser } from "../../api/api";
 import { useEffect } from "react";
 import { useUser } from "../../UserContext";
-import { io } from "socket.io-client";
 import NewChat from "../../components/NewChat/NewChat";
 import Avatar from "../../components/Avatar/Avatar";
 
-const serverUrl = import.meta.env.VITE_SERVER_URL;
-
 export default function ChatLayout() {
-  // const userData = useLoaderData();
-  const { updateUser, user, addChat, updateChat } = useUser();
+  const { updateUser, user, addChat, updateChat, setSocket } = useUser();
   const location = useLocation();
   const navigate = useNavigate();
   const color = user.theme === "light" ? "rgb(75, 75, 75)" : "white";
 
   useEffect(() => {
-    const socket = io(serverUrl);
+    if(!user.socket) return
+    console.log(user.socket)
+    user.socket.on('connect', () => {
+      console.log('socketId in useEffect: ', user.socket.id)
+      authenticateUser()
+      .then((res) => {
+        if (res.status === "fail") {
+          return redirect("/login");
+        }
+        if(res.status === 'success'){
+          const userObj = {
+            id: res.data.user._id,
+            socketId: user.socket.id,
+            name: res.data.user.name,
+          };
+          console.log('userObj: ', userObj)
+      
+          user.socket.emit("loginUser", userObj);
+          const userData = res.data.user;
+          const chatsData = res.data.chats;
+          userData.id = userData._id
+          delete userData._id
+      
+          console.log('socketId: ', user.socket.id);
+      
+          updateUser({
+            ...userData,
+            socket: user.socket,
+            connectedUsers: [],
+            chats: chatsData
+          });
+        }
+      })
+    })
+    user.socket.on('connect_error', (err) => {
+      console.log(err)
+      console.log(err.message)
+      setSocket()
+    })
 
-    socket.on("connect", async () => {
-      const response = await authenticateUser();
-
-      if (response.status === "fail") {
-        return redirect("/login");
-      }
-
-      const userObj = {
-        id: response.data.user._id,
-        socketId: socket.id,
-        name: response.data.user.name,
-      };
-      console.log(userObj)
-
-      socket.emit("loginUser", userObj);
-      const userData = response.data.user;
-      const chatsData = response.data.chats;
-      userData.id = userData._id
-      delete userData._id
-
-      console.log(socket.id);
-
-      updateUser({
-        ...userData,
-        socket: socket,
-        connectedUsers: [],
-        chats: chatsData
-      });
+    window.addEventListener('beforeunload', () => {
+      user.socket.disconnect();
     });
-  }, []);
+ 
+  }, [user.socket]);
 
   async function handleLogout() {
     logoutUser().then(() => navigate("/login", { replace: true }));
