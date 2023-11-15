@@ -17,6 +17,7 @@ export default function Message({ message, users, messages }) {
   const { user: thisUser } = useUser();
   const [selectedImage, setSelectedImage] = useState(null);
   const messageRef = useRef();
+  const isOnline = thisUser.connectedUsers.some((u) => u === author._id && u !== thisUser.id );
 
 
   function handleDeleteMessage() {
@@ -26,7 +27,7 @@ export default function Message({ message, users, messages }) {
     if(message.files.length > 0){
       deleteFiles(files, thisUser.currentChat)
     }
-    deleteMessage(message._id, thisUser.currentChat);
+    deleteMessage(message._id, thisUser.currentChat)
   }
 
   function isFirstFromUser() {
@@ -49,6 +50,7 @@ export default function Message({ message, users, messages }) {
       />
       {isFirst && (
         <Avatar
+        isOnline={isOnline}
           size={'2rem'}
           config={author.avatar}
         />

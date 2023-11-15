@@ -39,7 +39,8 @@ export default function ChatLayout() {
       education: userData.user.education,
       work: userData.user.work,
       avatar: userData.user.avatar,
-      gender: userData.user.gender
+      gender: userData.user.gender,
+      connectedUsers: []
     });
   }, []);
 
@@ -109,8 +110,8 @@ export async function loader() {
     socketId: socket.id,
     name: response.data.user.name,
   };
-
-  socket.emit("loginUser", userObj);
+  
+  socket.emit("loginUser", userObj)
 
   return { ...response.data, socket };
 }

@@ -73,3 +73,32 @@ exports.logoutUser = async (req, res) => {
     blacklistedTokens.push(token)
     res.status(204).end()
 }
+
+exports.changePassword = async (req, res) => {
+    const { userId, newPassword, currentPassword } = req.body
+
+    try {
+        const user = await User.findById(userId).select('+password')
+        if (!user) throw new Error('User not found')
+
+        const passIsVerified = await user.checkPassword(currentPassword, user.password)
+        if (!passIsVerified) throw new Error('Password incorrect')
+
+        user.password = newPassword
+        await user.save()
+
+        user.password = undefined
+
+        res.status(200).json({
+            status: 'success',
+            data: user
+        })
+
+
+    } catch (err) {
+        res.status(400).json({
+            status: 'fail',
+            message: err.message
+        })
+    }
+}

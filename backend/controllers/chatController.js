@@ -42,32 +42,6 @@ exports.createChat = async (req, res) => {
     }
 }
 
-exports.sendChatRequest = async (req, res) => {
-    const { senderId, receiverId } = req.body
-
-    // try {
-    //     //create new chat
-    //     const newChat = await Chat.create({ users: [senderId, receiverId] })
-    //     await newChat.populate('users')
-
-    //     //push chat id to sender
-    //     await User.findByIdAndUpdate(senderId, {$push: {chats: newChat._id}})
-
-    //     //push chat id to receiver
-    //     await User.findByIdAndUpdate(receiverId, {$push: {chats: newChat._id}})
-
-    //     res.status(201).json({
-    //         status: 'success',
-    //         data: newChat
-    //     })
-    // } catch (err) {
-    //     res.status(400).json({
-    //         status: 'fail',
-    //         message: err.message
-    //     })
-    // }
-}
-
 exports.getChatById = async (req, res) => {
     const { chatId } = req.params
     const {userId, addUserToReadBy} = req.body
@@ -105,10 +79,6 @@ exports.getChatById = async (req, res) => {
             message: err.message
         })
     }
-}
-
-exports.getLastMessage = async () => {
-
 }
 
 exports.getPreviousBatch = async (req, res) => {
@@ -162,6 +132,11 @@ exports.deleteMessage = async (req, res) => {
     
     const chat = await Chat.findById(chatId)
     const batch = await Batch.findOneAndUpdate({chat: chat._id, 'messages._id': messageId}, {$pull: {messages: {_id: messageId}}}, {new:true})
+    const batches = await Batch.find({chat: chatId})
+    const lastMessage = batches.at(-1).messages.at(-1)
+
+    const {user, content} = lastMessage
+    await chat.updateOne({lastMessage: {user, content, readBy: chat.users}})
 
     EventEmitter.emit('newMessage', chatId, chat.users)
 }

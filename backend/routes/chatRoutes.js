@@ -13,9 +13,6 @@ router.route('/:chatId')
 router.route('/:chatId/messages/:messageId')
     .delete(chatController.deleteMessage)
 
-router.route('/request')
-    .post(chatController.sendChatRequest)
-
 router.route('/:chatId/batches/:batchNumber')
     .get(chatController.getPreviousBatch)
 

@@ -12,4 +12,7 @@ router.route('/logout')
 router.route('/jwt')
     .post(authController.authenticateUser)
 
+router.route('/password')
+    .post(authController.changePassword)
+
 module.exports = router

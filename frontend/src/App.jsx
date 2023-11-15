@@ -21,7 +21,7 @@ import Profile from "./pages/Profile/Profile";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
-    <Route>
+    <Route errorElement={<Navigate to='/chat/messages'/>}>
       <Route path="/" element={<Navigate to="/chat" />} />
       <Route path="login" element={<Login />} />
       <Route path="chat" element={<ChatLayout />} loader={ChatLayoutLoader}>
@@ -63,7 +63,7 @@ function App() {
         document.documentElement.style.setProperty('--color-active-line', '#4c9afa')
           break
       case 'dark':
-        document.documentElement.style.setProperty('--color-primary', '#161515')
+        document.documentElement.style.setProperty('--color-primary', 'rgb(33, 33, 33)')
         document.documentElement.style.setProperty('--color-primary-light', '#151a28')
         document.documentElement.style.setProperty('--color-accent', '#e13073')
         document.documentElement.style.setProperty('--color-accent-light', '#f14788')

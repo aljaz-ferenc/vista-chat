@@ -45,15 +45,40 @@ const io = socketio(server, {
 })
 
 io.on('connect', (socket) => {
+    io.emit('connectedUsers', connectedUsers.map(u =>u.id))
+    
     socket.on('disconnect', () => {
+        const user = connectedUsers.find(user => user.socketId === socket.id)
+        console.log(connectedUsers)
         connectedUsers = connectedUsers.filter(user => user.socketId !== socket.id)
+        if(user){
+            io.emit('connectedUsers', connectedUsers.map(u =>u.id))
+        }
+    })
+    
+    socket.on('loginUser', (user) => {
+        if(!connectedUsers.some(u => u.id === user.id)){
+            connectedUsers.push(user)
+            io.emit('connectedUsers', connectedUsers.map(u =>u.id))
+        }
+    })
+    socket.on('getConnectedUsers', (ack) => {
+        console.log('getConnectedUsers')
+        ack(connectedUsers.map(u =>u.id))
     })
 
-    socket.on('loginUser', (user) => {
-        if(!connectedUsers.some(user => user.socketId === socket.id))
-        connectedUsers.push(user)
+    socket.on('isTyping', (bool, senderId, receiverId, chatId) => {
+        console.log(bool, senderId, receiverId, chatId)
+        const receiver = connectedUsers.find(u => u.id === receiverId)
+
+        if(!receiver) return
+        
+        console.log(receiver)
+
+        io.to(receiver.socketId).emit('isTyping', bool)
     })
 })
+
 
 EventEmitter.on('newChat', (newChat, users) => {
     users.forEach(u => {

@@ -82,3 +82,30 @@ exports.updateUser = async (req,res) => {
         })
     }
 }
+
+exports.deleteUser = async (req, res) => {
+    const {userId} = req.params
+    const {password} = req.body
+    
+    console.log(userId)
+    try{
+        const user = await User.findById(userId).select('+password')
+        if(!user) throw new Error('User not found')
+
+        const passIsVerified = await user.checkPassword(password, user.password)
+        if (!passIsVerified) throw new Error('Password incorrect')
+
+        await user.deleteOne()
+
+        res.status(200).json({
+            status: 'success',
+            data: 'user deleted'
+        })
+
+    }catch(err){
+        res.status(404).json({
+            status: 'fail',
+            message: err.message
+        })
+    }
+}

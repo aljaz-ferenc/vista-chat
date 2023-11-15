@@ -23,6 +23,8 @@ export default function Messages() {
   const [input, setInput] = useState("");
   const [isLoadingBatch, setIsLoadingBatch] = useState(false);
   const [emojiPickerIsOpen, setEmojiPickerIsOpen] = useState(false);
+  const [isTyping, setIsTyping] = useState(false)
+  const [otherIsTyping, setOtherIsTyping] = useState(false)
   const {
     user: thisUser,
     resetCurrentChat,
@@ -41,10 +43,11 @@ export default function Messages() {
   const { chatId } = useParams();
   const chat = thisUser?.chats.find((chat) => chat?._id === chatId);
   const otherUser = chat?.users.find((u) => u?._id !== thisUser.id);
+  const timerRef = useRef()
+  const firstRenderRef = useRef(true)
 
   useEffect(() => {
     updateChat(chatId);
-
     return () => {
       resetCurrentChat();
     };
@@ -94,6 +97,7 @@ export default function Messages() {
 
   useEffect(() => {
     if (!messagesElementRef.current) return;
+    setIsTyping(false)
     messagesElementRef.current.scrollTo({
       top:
         messagesElementRef.current.scrollHeight -
@@ -101,6 +105,46 @@ export default function Messages() {
       behavior: "smooth",
     });
   }, [chat, messagesElementRef.current]);
+
+
+  useEffect(() => {
+    if(!input) return
+    if(firstRenderRef.current){
+      firstRenderRef.current = false
+      return
+    }
+
+    setIsTyping(true)
+    
+    timerRef.current = setTimeout(() => {
+      setIsTyping(false)
+
+    }, 1000)
+
+    return () => {
+      clearTimeout(timerRef.current)
+    }
+  }, [input])
+
+  useEffect(() => {
+    if(!thisUser.socket) return
+
+    if(isTyping){
+      thisUser.socket.emit('isTyping', true, thisUser.id, otherUser._id, chat._id)
+    }
+    if(!isTyping){
+      thisUser.socket.emit('isTyping', false, thisUser.id, otherUser._id, chat._id)
+    }
+  }, [isTyping])
+
+  useEffect(() => {
+    if(!thisUser.socket) return
+
+    thisUser.socket.on('isTyping', bool => {
+     setOtherIsTyping(bool)
+    })
+  }, [thisUser.socket])
+
 
   async function handleSendMessage(e) {
     e.preventDefault();
@@ -203,9 +247,10 @@ export default function Messages() {
                     users={chat.users}
                     key={msg._id}
                   />
-                );
-              })}
+                  );
+                })}
           </div>
+            
         </div>
       )}
       {thumbnails.length > 0 && (
@@ -287,6 +332,7 @@ export default function Messages() {
             <EmojiPicker onEmojiClick={handleSelectEmoji} />
           </div>
         )}
+        {otherIsTyping && <p className="is-typing">{otherUser.name} is typing...</p>}
       </form>
     </div>
   );

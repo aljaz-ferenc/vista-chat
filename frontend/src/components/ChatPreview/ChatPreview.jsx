@@ -3,10 +3,14 @@ import "./ChatPreview.scss";
 import { GoDotFill } from "react-icons/go";
 import { trimText } from "../../utils/formatTime";
 import Avatar from "../Avatar/Avatar";
+import { useUser } from "../../UserContext";
+import { useEffect } from "react";
 
 export default function ChatPreview({ user, chat, thisUser }) {
+  const {user: userCtx} = useUser()
   const navigate = useNavigate();
-  const lastMessage = chat?.messages?.at(-1)
+  const lastMessage = chat.lastMessage
+  const isOnline = userCtx.connectedUsers.some(u => u === user._id)
 
   function handleChatClick(chatId) {
     navigate(chatId);
@@ -16,23 +20,23 @@ export default function ChatPreview({ user, chat, thisUser }) {
     <div
       onClick={() => handleChatClick(chat._id)}
       className={`chat-preview ${chat._id === thisUser.currentChat ? 'active':''}`}
-      style={{ display: user._id === thisUser.id ? "none" : "block" }}
+      style={{ display: user._id === thisUser.id ? "none" : "block"}}
       key={user._id}
     >
-      <Avatar size='2rem' config={user.avatar}/>
+      <Avatar isOnline={isOnline} size='2rem' config={user.avatar}/>
       <p className="chat-preview__name">{user.name}</p>
-      {chat.messages && !chat.messages.length === 0 && (
+      {/* {!chat.messages.length === 0 && (
         <p className="chat-preview__last-message"></p>
-      )}
-      {chat.messages && chat.lastMessage.content !== "" && chat.messages.length > 0 && (
+      )} */}
+      {lastMessage.content && lastMessage.content !== "" && (
         <p className="chat-preview__last-message">
-          {trimText(chat.lastMessage.content, 20)}
+          {trimText(lastMessage.content, 20)}
         </p>
       )}
-      {chat.messages && chat.lastMessage.content === ""&& lastMessage?.images.length > 0  && (
-        <p className="chat-preview__last-message">Sent an image</p>
+      {lastMessage.content === "" && (
+        <p className="chat-preview__last-message">Sent a file</p>
       )}
-      {chat.messages && !chat.lastMessage.readBy.includes(thisUser.id) && (
+      {lastMessage?.user && !lastMessage.readBy.includes(thisUser.id) && (
         <GoDotFill
           size={25}
           className="chat-preview__unread-circle"

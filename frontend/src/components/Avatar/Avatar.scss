@@ -1,0 +1,9 @@
+.avatar-container{
+    position: relative;
+    &__online-status{
+        position: absolute;
+        bottom: -.3rem;
+        right: -.3rem;
+        z-index: 2;
+    }
+}

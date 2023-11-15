@@ -14,6 +14,9 @@
     flex-direction: column;
     gap: 2rem;
     align-items: center;
+    &--online-status{
+      display: flex;
+    }
     & .avatar {
       height: 10rem;
       width: 10rem;

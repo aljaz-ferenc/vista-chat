@@ -140,3 +140,26 @@ export async function logoutUser(){
         }
     })
 }
+
+export async function changePassword(userId, currentPassword, newPassword){
+    const response = await fetch(`${URL}/auth/password`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({userId, currentPassword, newPassword})
+    })
+
+    return response.json()
+}
+
+export async function deleteAccount(userId, password){
+    const response = await fetch(`${URL}/users/${userId}`, {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({password})
+    })
+    return response.json()
+}

@@ -6,6 +6,7 @@
   color: #fff;
   padding: 0.2rem 1rem;
   position: relative;
+  margin-bottom: 1rem;
   cursor: default;
   .content {
     max-width: 35rem;
@@ -40,7 +41,7 @@
   &:hover .delete-btn {
     display: block;
   }
-  & .avatar {
+  & .avatar-container {
     min-width: 2rem;
     min-height: 2rem;
     position: absolute;
@@ -59,7 +60,7 @@
       color: var(--color-text);
       background-color: var(--color-my-message);
     }
-    & .avatar {
+    & .avatar-container {
       right: -1.5rem;
     }
   }
@@ -70,7 +71,7 @@
     & .content {
       background-color: var(--color-other-message);
     }
-    & .avatar {
+    & .avatar-container {
       left: -1.5rem;
     }
   }

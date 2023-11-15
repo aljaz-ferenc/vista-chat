@@ -17,7 +17,8 @@ const initialState = {
   socket: null,
   currentChat: null,
   lastBatch: null,
-  theme: 'dark'
+  theme: 'dark',
+  connectedUsers: []
 };
 
 function reducer(state, action) {
@@ -74,6 +75,16 @@ function reducer(state, action) {
         ...state,
         theme: action.payload
       }
+    case 'connectedUsers/update':
+      return {
+        ...state,
+        connectedUsers: action.payload
+      }
+    case 'connectedUsers/remove':
+      return {
+        ...state,
+        connectedUsers: action.payload
+      }
   }
 }
 
@@ -108,6 +119,10 @@ export default function UserContextProvider({ children }) {
     dispatch({type: 'theme/set', payload: theme})
   }
 
+  function updateConnectedUsers(connectedUsers){
+    dispatch({type: 'connectedUsers/update', payload: connectedUsers})
+  }
+
   function updateReadStatus(chatId) {
     const chat = user.chats.find((chat) => chat._id === chatId);
 
@@ -117,8 +132,18 @@ export default function UserContextProvider({ children }) {
     }
   }
 
+useEffect(() => {
+  if (!user.socket) return;
+  user.socket.emit('getConnectedUsers', (connectedUsers) => {
+    console.log('got users')
+    updateConnectedUsers(connectedUsers)
+  })
+
+}, [user.socket])
+
   useEffect(() => {
     if (!user.socket) return;
+
 
     user.socket.on("newMessage", (chatId) => {
       console.log("newMessage event");
@@ -134,6 +159,10 @@ export default function UserContextProvider({ children }) {
     user.socket.on("newChat", (chat) => {
       addChat(chat);
     });
+
+    user.socket.on('connectedUsers', connectedUsers => {
+      updateConnectedUsers(connectedUsers)
+    })
 
     return () => {
       user.socket.removeAllListeners("newMessage");
