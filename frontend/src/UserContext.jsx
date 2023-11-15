@@ -17,7 +17,7 @@ const initialState = {
   socket: null,
   currentChat: null,
   lastBatch: null,
-  theme: 'dark',
+  theme: null,
   connectedUsers: []
 };
 

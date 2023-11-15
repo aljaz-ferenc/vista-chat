@@ -24,7 +24,7 @@ const router = createBrowserRouter(
     <Route errorElement={<Navigate to='/chat/messages'/>}>
       <Route path="/" element={<Navigate to="/chat" />} />
       <Route path="login" element={<Login />} />
-      <Route path="chat" element={<ChatLayout />} loader={ChatLayoutLoader}>
+      <Route path="chat" element={<ChatLayout />} >
         <Route path="messages" element={<Chat />}>
           <Route path=":chatId" element={<Messages />}  />
           {/* <Route path="new/:userId" element={<NewMessage />} /> */}

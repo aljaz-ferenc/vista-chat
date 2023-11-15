@@ -20,36 +20,54 @@ import { io } from "socket.io-client";
 import NewChat from "../../components/NewChat/NewChat";
 import Avatar from "../../components/Avatar/Avatar";
 
+const serverUrl = import.meta.env.VITE_SERVER_URL;
+
 export default function ChatLayout() {
-  const userData = useLoaderData();
+  // const userData = useLoaderData();
   const { updateUser, user, addChat, updateChat } = useUser();
   const location = useLocation();
   const navigate = useNavigate();
-  const color = user.theme === 'light' ? 'rgb(75, 75, 75)' : 'white'
+  const color = user.theme === "light" ? "rgb(75, 75, 75)" : "white";
 
   useEffect(() => {
-    updateUser({
-      name: userData.user.name,
-      email: userData.user.email,
-      id: userData.user._id,
-      chats: userData.chats,
-      socket: userData.socket,
-      theme: userData.user.theme,
-      phone: userData.user.phone,
-      education: userData.user.education,
-      work: userData.user.work,
-      avatar: userData.user.avatar,
-      gender: userData.user.gender,
-      connectedUsers: []
+    const socket = io(serverUrl);
+
+    socket.on("connect", async () => {
+      const response = await authenticateUser();
+
+      if (response.status === "fail") {
+        return redirect("/login");
+      }
+
+      const userObj = {
+        id: response.data.user._id,
+        socketId: socket.id,
+        name: response.data.user.name,
+      };
+      console.log(userObj)
+
+      socket.emit("loginUser", userObj);
+      const userData = response.data.user;
+      const chatsData = response.data.chats;
+      userData.id = userData._id
+      delete userData._id
+
+      console.log(socket.id);
+
+      updateUser({
+        ...userData,
+        socket: socket,
+        connectedUsers: [],
+        chats: chatsData
+      });
     });
   }, []);
 
   async function handleLogout() {
-    logoutUser()
-      .then(() => navigate("/login", { replace: true }))
+    logoutUser().then(() => navigate("/login", { replace: true }));
   }
 
-  if (!user) return <div>Loading...</div>;
+  if (!user.name) return <div>Loading...</div>;
 
   return (
     <div className="chat-layout">
@@ -65,9 +83,7 @@ export default function ChatLayout() {
         <NavLink to="profile" className="chat-layout__sidebar--item">
           <BsPersonCircle
             size={30}
-            color={
-              location.pathname.includes("profile") ? "#fff" : "#ffffff5c"
-            }
+            color={location.pathname.includes("profile") ? "#fff" : "#ffffff5c"}
           />
         </NavLink>
         <NavLink to="settings" className="chat-layout__sidebar--item">
@@ -85,8 +101,8 @@ export default function ChatLayout() {
           <Notification/>
         </div> */}
         <div className="chat-layout__top--item">
-          <Avatar size='2rem' config={user.avatar}/>
-          <span style={{color}}>{user.name}</span>
+          <Avatar size="2rem" config={user.avatar} />
+          <span style={{ color }}>{user.name}</span>
         </div>
         <div className="chat-layout__top--item logout-btn">
           <IoIosLogOut color={color} onClick={handleLogout} size={30} />
@@ -98,20 +114,20 @@ export default function ChatLayout() {
 }
 
 export async function loader() {
-  const socket = io(import.meta.env.VITE_SERVER_URL);
-  const response = await authenticateUser();
-
-  if (response.status === "fail") {
-    return redirect("/login");
-  }
-
-  const userObj = {
-    id: response.data.user._id,
-    socketId: socket.id,
-    name: response.data.user.name,
-  };
-  
-  socket.emit("loginUser", userObj)
-
-  return { ...response.data, socket };
+  // const socket = io(serverUrl)
+  //   socket.on('connect', async() => {
+  //     console.log('socket connected: ', socket.id)
+  //   const response = await authenticateUser();
+  //   if (response.status === "fail") {
+  //     return redirect("/login");
+  //   }
+  //   const userObj = {
+  //     id: response.data.user._id,
+  //     socketId: socket.id,
+  //     name: response.data.user.name,
+  //   };
+  //   socket.emit("loginUser", userObj)
+  //   console.log('loginUser emitted: ', userObj)
+  // })
+  // return { null};
 }

@@ -41,6 +41,7 @@ exports.loginUser = async (req, res) => {
 
 exports.authenticateUser = async (req, res) => {
     const token = req.cookies.chatAppJWT
+    console.log('auth')
 
     try {
         if (blacklistedTokens.includes(token)) throw new Error('Token blacklisted')
