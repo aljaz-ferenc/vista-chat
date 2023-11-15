@@ -146,7 +146,7 @@ useEffect(() => {
 
 
     user.socket.on("newMessage", (chatId) => {
-      console.log("newMessage event");
+      console.log("context newMessage event");
       let addUserToReadBy = chatId === user.currentChat;
 
       getChatById(chatId, user.id, addUserToReadBy).then((res) => {

@@ -96,6 +96,8 @@ exports.addNewMessage = async (req, res) => {
     const { message, userId, images, files } = req.body
     const { chatId } = req.params
 
+    console.log('chatController addNewMessage')
+
     const newMessage = {
         content: message,
         user: userId,

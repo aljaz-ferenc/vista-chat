@@ -88,7 +88,7 @@ EventEmitter.on('newChat', (newChat, users) => {
 })
 
 EventEmitter.on('newMessage', (chatId, users) => {
-
+    console.log('socket newMessage')
     const usersArr = users
         .map((user) => connectedUsers.find((u) => u.id === user.toString()))
         .filter((user) => user !== undefined);

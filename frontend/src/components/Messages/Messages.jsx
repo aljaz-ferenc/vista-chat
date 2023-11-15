@@ -162,11 +162,11 @@ export default function Messages() {
 
     sendMessage(input, thisUser.id, chatId, imagesArr, filesArr)
       .then(res => {
-          console.log(res)
           setImages([]);
           setFiles([])
           setThumbnails([]);
           setInput("");
+          console.log('message sent')
       })
   }
 
