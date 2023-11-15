@@ -1,0 +1,32 @@
+.thumbnail {
+  height: 5rem;
+  width: 5rem;
+  position: relative;
+  overflow: hidden;
+  border-radius: 10px;
+  cursor: pointer;
+  &:hover &__close-btn {
+    opacity: 1;
+  }
+  &:hover img {
+    filter: brightness(1);
+  }
+
+  &__close-btn {
+    transition: all 0.2s;
+    position: absolute;
+    top: 0.2rem;
+    right: 0.2rem;
+    z-index: 2;
+    opacity: 0.3;
+  }
+  img {
+    transition: all 0.2s;
+    top: 50%;
+    left: 50%;
+    position: absolute;
+    transform: translate(-50%, -50%);
+    height: 100%;
+    filter: brightness(0.5);
+  }
+}

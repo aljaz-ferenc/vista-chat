@@ -1,0 +1,6 @@
+@import '../../sass/variables.scss';
+
+.conversations-list{
+    background-color: var(--color-chats-list-bg);
+    min-width: 20rem;
+}

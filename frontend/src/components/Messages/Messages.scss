@@ -1,0 +1,138 @@
+@import "../../sass/variables.scss";
+@import "../../sass/mixins.scss";
+
+.messages {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding-top: 2rem;
+  @include scrollbar;
+  background-color: var(--color-messages-background);
+  &__top {
+    .user-info {
+      display: flex;
+      align-items: center;
+      flex-direction: column;
+      gap: 2rem;
+      .avatar {
+        height: 10rem;
+        width: 10rem;
+      }
+    }
+  }
+  &__input {
+    width: 100%;
+    position: relative;
+    padding: 1rem;
+    background-color: var(--color-messages-background);
+    color: rgb(75, 75, 75);
+    input:first-child {
+      width: 100%;
+      border-radius: 20px;
+      border: 1px solid gray;
+      height: 2.5rem;
+      padding: 0 1rem;
+      outline: none;
+      padding-left: 7.5rem;
+      &:focus-visible {
+        border: 1px solid var(--color-primary);
+      }
+    }
+
+    .send-message-btn{
+      position: absolute;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border: none;
+      top: 50%;
+      right: 1.3rem;
+      transform: translateY(-50%);
+      background-color: var(--color-primary);
+      height: calc(90% - 2rem);
+      padding: 0.5rem;
+      width: 3.5rem;
+      border-radius: 20px;
+      cursor: pointer;
+      transition: all 0.2s;
+      overflow: hidden;
+      .icon {
+        width: 100%;
+        height: 100%;
+      }
+      &:hover {
+        background-color: var(--color-accent);
+        padding: 0.3rem;
+      }
+    }
+    .upload-img-btn, .emojis-btn, .upload-file-btn  {
+      position: absolute;
+      left: 2rem;
+      top: 50%;
+      transform: translateY(-50%);
+      border: none;
+      background-color: transparent;
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+      opacity: 0.5;
+      &:hover {
+        opacity: 1;
+      }
+      &:hover svg {
+        fill: var(--color-accent);
+      }
+    }
+    .emojis-btn{
+      left: 6.5rem;
+    }
+    .upload-file-btn{
+      left: 4.1rem;
+    }
+  }
+  &__main {
+    padding: 0 2rem;
+    overflow-y: scroll;
+    height: 100%;
+    & .loader {
+      margin: 2rem auto;
+    }
+    hr {
+      margin: 2rem 0;
+    }
+  }
+  &__list {
+    height: 100%;
+
+  }
+  &__thumbnails {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin: 0 1rem;
+  }
+  .emoji-picker{
+    position: absolute;
+    top: 0;
+    transform: translate(0, -100%);
+  }
+  .files{
+    background-color: rgba(0, 0, 0, 0.151);
+    cursor: default;
+    & > div{
+      padding: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      &:hover{
+        background-color: rgba(0, 0, 0, 0.101);
+      }
+    }
+    & .remove-btn{
+      margin-left: auto;
+      cursor: pointer;
+    }
+  }
+}

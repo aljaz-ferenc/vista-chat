@@ -1,0 +1,5 @@
+@import '../../sass/mixins.scss';
+
+.register-form {
+  @include form(2.5rem);
+}

@@ -1,0 +1,71 @@
+@import "../../sass/mixins.scss";
+
+.profile {
+  padding: 2rem;
+  display: flex;
+  gap: 3rem;
+  width: 100%;
+  overflow-y: scroll;
+  display: flex;
+  justify-content: center;
+  height: 100%;
+  &__info {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    p {
+      margin-bottom: 3rem;
+    }
+    form {
+      gap: 2rem;
+      // width: min-content;
+      padding-bottom: 2rem;
+      .input-group {
+        display: flex;
+        flex-direction: column;
+        width: 20rem;
+        margin-bottom: 2rem;
+        input{
+          color: rgb(75, 75, 75);
+
+        }
+        span {
+          color: red;
+        }
+      }
+      button {
+        @include button;
+      }
+    }
+  }
+  &__avatar {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+    .avatar {
+      width: 10rem;
+      height: 10rem;
+    }
+    display: flex;
+    gap: 1rem;
+    .gender {
+      gap: 1rem;
+      input, label{
+        cursor: pointer;
+      }
+      & > div {
+        display: flex;
+        gap: 0.5rem;
+      }
+    }
+    &--generate-btn{
+      @include button;
+      &:disabled{
+        opacity: .5;
+      }
+    }
+  }
+}

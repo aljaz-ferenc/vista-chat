@@ -1,0 +1,72 @@
+.shared-files-layout {
+  // padding: 0.2rem;
+  padding-top: 0;
+  width: 100%;
+  h3{
+    margin: 2rem 0;
+  }
+  &__tabs {
+    button {
+      color: #fff;
+      border-radius: 10px 10px 0 0;
+      background-color: var(--color-user-background);
+      border: none;
+      outline: none;
+      padding: .1rem 1rem;
+      cursor: pointer;
+      color: var(--color-shared-files-tab-inactive);
+      &.active {
+        background-color: var(--color-shared-files);
+        color: var(--color-shared-files-tab-active);
+      }
+    }
+  }
+  .shared-images {
+    color: #fff;
+    border-radius: 0 5px 5px 5px;
+    background-color: var(--color-shared-files);
+    padding: 1rem;
+    &__list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      &--image {
+        height: 5rem;
+        width: 5rem;
+        overflow: hidden;
+        position: relative;
+        border-radius: 10px;
+        cursor: pointer;
+        img {
+          height: 100%;
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+        }
+      }
+
+    }
+  }
+  .shared-files {
+    color: #fff;
+    background-color: var(--color-shared-files);
+    padding: 1rem;
+    border-radius: 0 5px 5px 5px;
+    &__list {
+      display: flex;
+      flex-wrap: wrap;
+      flex-direction: column;
+      gap: 0.5rem;
+      &--file{
+        // text-decoration: none;
+        // color: var(--color-text);
+        color: inherit;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+      }
+    }
+  }
+}

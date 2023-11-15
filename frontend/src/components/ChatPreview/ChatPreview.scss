@@ -1,0 +1,41 @@
+@import '../../sass/mixins.scss';
+@import '../../sass/variables.scss';
+
+.chat-preview {
+  background-color: var(--color-chats-list-item);
+  position: relative;
+  padding: 0.5rem;
+  margin: 0.5rem;
+  border-radius: 5px;
+  cursor: pointer;
+  display: flex !important;
+  align-items: center;
+  gap: 1rem;
+  box-shadow: 2px 2px 3px var(--color-shadow);
+  &:hover{
+    outline: 2px solid var(--color-accent);
+  }
+  &__name {
+    font-size: 1.2rem;
+    font-weight: 600;
+  }
+  &__last-message {
+    font-size: 0.9rem;
+    color: var(--color-text);
+    filter: opacity(.6);
+    font-weight: 300;
+  }
+  &__avatar{
+    height: 2rem;
+    width: 2rem;
+  }
+  &__unread-circle {
+    position: absolute;
+    top: 50%;
+    right: 1rem;
+    transform: translateY(-50%);
+  }
+  &.active{
+    @include active-line(var(--color-active-line));
+  }
+}

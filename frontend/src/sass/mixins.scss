@@ -1,0 +1,119 @@
+@import './variables.scss';
+
+@mixin center-content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+@mixin form($icon-right) {
+  color: rgb(75, 75, 75);
+  h2{
+    font-size: 3rem;
+  }
+  h4{
+    margin-bottom: 3rem;
+    font-weight: 600;
+  }
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    button {
+      width: 10rem;
+      border-radius: 20rem;
+      border: none;
+      padding: 0.5rem 1.5rem;
+      padding-right: 0;
+      background-color: #1755a2;
+      color: #fff;
+      transition: all 0.2s;
+      cursor: pointer;
+      display: flex;
+      justify-content: flex-start;
+      gap: 0.5rem;
+      align-items: center;
+      position: relative;
+      span {
+        display: flex;
+        align-items: center;
+        &:nth-child(2) {
+          position: absolute;
+          right: $icon-right;
+        }
+      }
+      &:hover {
+        background-color: #1755a2;
+        span {
+          animation: hover 0.5s forwards;
+        }
+      }
+      margin-bottom: 2rem;
+    }
+  }
+  .link {
+    color: #1755a2;
+    font-style: italic;
+    cursor: pointer;
+  }
+  @keyframes hover {
+    0% {
+      right: $icon-right;
+    }
+    100% {
+      right: 1rem;
+    }
+  }
+  .form-sub{
+    font-size: 1rem;
+    span{
+      &:nth-child(2){
+        font-weight: 600;
+      }
+    }
+  }
+}
+
+@mixin button{
+  border-radius: 20rem;
+  border: none;
+  padding: .5rem 1.5rem;
+  background-color: var(--color-primary);
+  color: #fff;
+  transition: all 0.2s;
+  cursor: pointer;
+  display: flex;
+  justify-content: flex-start;
+  gap: 0.5rem;
+  align-items: center;
+  position: relative;
+}
+
+@mixin active-line($color){
+  &::before{
+    content: '';
+    width: 2px;
+    height: 100%;
+    background-color: $color;
+    position: absolute;
+    left: 0;
+    top: 0;
+  }
+}
+
+@mixin scrollbar{
+  ::-webkit-scrollbar{
+    width: 10px;
+  }
+  ::-webkit-scrollbar-track{
+    background-color: var(--color-background);
+    border-radius: 3px;
+  }
+  ::-webkit-scrollbar-thumb{
+    background-color: var(--color-accent);
+    border-radius: 3px;
+    &:hover{
+      background-color: var(--color-accent-light);
+    }
+  }
+}

@@ -1,0 +1,32 @@
+@import "../../sass/variables.scss";
+@import "../../sass/mixins.scss";
+
+.user {
+  overflow-y: scroll;
+  max-width: 30rem;
+  padding: 1rem;
+  width: 50%;
+  background-color: var(--color-user-background);
+  border-left: $--border;
+  &__top {
+    margin-bottom: 3rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    align-items: center;
+    & .avatar {
+      height: 10rem;
+      width: 10rem;
+    }
+    .info {
+      gap: 1rem;
+      display: flex;
+      flex-direction: column;
+      & > div {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+      }
+    }
+  }
+}

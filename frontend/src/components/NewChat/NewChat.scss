@@ -1,0 +1,73 @@
+@import "../../sass/variables.scss";
+
+.new-chat {
+  width: 100%;
+  display: flex;
+  margin: 0 auto;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+}
+.input-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  padding-left: 0.5rem;
+  width: 100%;
+  height: 100% !important;
+  input {
+    color: var(--color-text);
+    background-color: var(--color-background);
+    width: 100%;
+    outline: none;
+    border: none;
+    padding-left: 0.5rem;
+    &::placeholder {
+      color: inherit;
+    }
+    &:focus {
+      outline: none;
+    }
+  }
+  .clear-found-users {
+    position: absolute;
+    top: 50%;
+    right: 1rem;
+    transform: translateY(-50%);
+    display: flex !important;
+    align-items: center;
+    &__user {
+      display: flex;
+      .avatar {
+        height: 2rem;
+        width: 2rem;
+      }
+    }
+  }
+  .spinner {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+  }
+  .clear-found-users {
+    cursor: pointer;
+  }
+}
+.found-users {
+  position: absolute;
+  top: 3rem;
+  z-index: 10;
+  background-color: #fff;
+  min-width: 20rem;
+  left: 0;
+  display: flex;
+  flex-direction: column;
+  div {
+    padding: 1rem;
+    cursor: pointer;
+    &:hover {
+      background-color: #ddd;
+    }
+  }
+}

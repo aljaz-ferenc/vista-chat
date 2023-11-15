@@ -1,0 +1,8 @@
+.settings{
+    margin: 2rem;
+    &__theme{
+        color: rgb(75, 75, 75);
+        display: flex;
+        gap: 1rem;
+    }
+}

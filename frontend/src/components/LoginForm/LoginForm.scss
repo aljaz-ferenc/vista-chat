@@ -1,0 +1,6 @@
+@import '../../sass/mixins.scss';
+
+.login-form{
+    color: inherit;
+    @include form(2.5rem);
+}
