@@ -19,7 +19,8 @@ mongoose.connect(DB).then(() => console.log('Databse connected successfully'))
 const app = express()
 
 app.use(cors({
-    origin: process.env.CLIENT_URL,
+    origin: '*',
+    // origin: process.env.CLIENT_URL,
     credentials: true,
 }))
 app.use(cookieParser())
@@ -37,7 +38,8 @@ const server = app.listen(port, () => {
 
 const io = socketio(server, {
     cors: {
-        origin: process.env.CLIENT_URL,
+        origin: '*',
+        // origin: process.env.CLIENT_URL,
         timeout: 10000
     },
 })
