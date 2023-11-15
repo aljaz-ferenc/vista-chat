@@ -62,6 +62,7 @@ export default function Settings() {
             value="light"
             name="theme"
             onChange={() => handleSetTheme("light")}
+            checked={user.theme === 'light'}
           />
           <label htmlFor="light">Light</label>
         </div>
@@ -72,6 +73,7 @@ export default function Settings() {
             value="dark"
             name="theme"
             onChange={() => handleSetTheme("dark")}
+            checked={user.theme === 'dark'}
           />
           <label htmlFor="dark">Dark</label>
         </div>
@@ -110,9 +112,6 @@ export default function Settings() {
             {changePassErr && (
               <small className="no-match-err">{changePassErr}</small>
             )}
-            {/* {wrongPass && (
-              <small>Password incorrect!</small>
-            )} */}
             <button className="submit-btn" type="submit">
               Change Password
             </button>

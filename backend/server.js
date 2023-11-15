@@ -72,8 +72,6 @@ io.on('connect', (socket) => {
         const receiver = connectedUsers.find(u => u.id === receiverId)
 
         if(!receiver) return
-        
-        console.log(receiver)
 
         io.to(receiver.socketId).emit('isTyping', bool)
     })
