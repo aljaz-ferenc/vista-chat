@@ -18,8 +18,6 @@ mongoose.connect(DB).then(() => console.log('Databse connected successfully'))
 
 const app = express()
 
-app.use(express.static('./node_modules/@socket.io/admin-ui/ui/dist'))
-
 app.use(cors({
     origin: process.env.CLIENT_URL,
     credentials: true,
@@ -31,10 +29,10 @@ app.use(`/api/v1/users`, userRouter)
 app.use(`/api/v1/chats`, chatRouter)
 app.use(`/api/v1/auth`, authRouter)
 
-const PORT = process.env.PORT || 3000
+const port = process.env.PORT || 3000
 
-const server = app.listen(PORT, () => {
-    console.log(`Listening on port ${PORT}`)
+const server = app.listen(port, () => {
+    console.log(`Listening on port ${port}`)
 })
 
 const io = socketio(server, {
