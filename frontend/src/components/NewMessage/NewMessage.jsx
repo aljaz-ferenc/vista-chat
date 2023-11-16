@@ -8,27 +8,24 @@ import { useUser } from "../../UserContext";
 export default function NewMessage() {
   const { userId: receiverId } = useParams();
   const [receiver, setReceiver] = useState(null);
-  const {user} = useUser()
+  const { user } = useUser();
   const [input, setInput] = useState("");
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   useEffect(() => {
     getUserById(receiverId).then((res) => {
-        setReceiver(res.data);
+      setReceiver(res.data);
     });
   }, []);
 
-  function submitForm(e){
-    //create new chat with first message
-    e.preventDefault()
-    createNewChat(user.id, receiverId, input)
-        .then(res => {
-            if(res.status === 'success'){
-                setInput('')
-                navigate(`../${res.data._id}`)
-            }
-        })
-    //navigate to messages/:userId and continue the chat
+  function submitForm(e) {
+    e.preventDefault();
+    createNewChat(user.id, receiverId, input).then((res) => {
+      if (res.status === "success") {
+        setInput("");
+        navigate(`../${res.data._id}`);
+      }
+    });
   }
 
   return (
@@ -37,23 +34,6 @@ export default function NewMessage() {
         {receiver && (
           <p>This is the beginning of your conversation with {receiver.name}</p>
         )}
-        {/* <div className="users">
-          {chat && chat.users.length === 2 ? (
-            chat.users.map((user) => (
-              <div
-                style={{ display: thisUser.id === user._id ? "none" : "block" }}
-                key={user._id}
-              >
-                <h3>{user.name}</h3>
-                <p>
-                  This is the beginning of your conversation with {user.name}
-                </p>
-              </div>
-            ))
-          ) : (
-            <div></div>
-          )}
-        </div> */}
       </div>
       <div className="messages__main"></div>
       <form className="messages__input" onSubmit={submitForm}>

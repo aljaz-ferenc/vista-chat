@@ -4,14 +4,20 @@ import "./Avatar.scss";
 import { BsPersonCircle } from "react-icons/bs";
 import { GoDotFill } from "react-icons/go";
 
-export default function Avatar({ size, config, isOnline=false }) {
+export default function Avatar({ size, config, isOnline = false }) {
   const { user } = useUser();
 
   return (
     <>
       {config ? (
         <div className="avatar-container">
-          {isOnline && <GoDotFill size={20} className="avatar-container__online-status" color="rgb(0, 187, 0)"/>}
+          {isOnline && (
+            <GoDotFill
+              size={20}
+              className="avatar-container__online-status"
+              color="rgb(0, 187, 0)"
+            />
+          )}
           <AvatarComponent
             {...config}
             style={{ width: size, height: size }}

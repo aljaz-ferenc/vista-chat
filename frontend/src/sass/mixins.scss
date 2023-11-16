@@ -1,4 +1,4 @@
-@import './variables.scss';
+@import "./variables.scss";
 
 @mixin center-content {
   display: flex;
@@ -8,10 +8,10 @@
 
 @mixin form($icon-right) {
   color: rgb(75, 75, 75);
-  h2{
+  h2 {
     font-size: 3rem;
   }
-  h4{
+  h4 {
     margin-bottom: 3rem;
     font-weight: 600;
   }
@@ -64,20 +64,20 @@
       right: 1rem;
     }
   }
-  .form-sub{
+  .form-sub {
     font-size: 1rem;
-    span{
-      &:nth-child(2){
+    span {
+      &:nth-child(2) {
         font-weight: 600;
       }
     }
   }
 }
 
-@mixin button{
+@mixin button {
   border-radius: 20rem;
   border: none;
-  padding: .5rem 1.5rem;
+  padding: 0.5rem 1.5rem;
   background-color: var(--color-primary);
   color: #fff;
   transition: all 0.2s;
@@ -89,9 +89,9 @@
   position: relative;
 }
 
-@mixin active-line($color){
-  &::before{
-    content: '';
+@mixin active-line($color) {
+  &::before {
+    content: "";
     width: 2px;
     height: 100%;
     background-color: $color;
@@ -101,18 +101,18 @@
   }
 }
 
-@mixin scrollbar{
-  ::-webkit-scrollbar{
+@mixin scrollbar {
+  ::-webkit-scrollbar {
     width: 10px;
   }
-  ::-webkit-scrollbar-track{
+  ::-webkit-scrollbar-track {
     background-color: var(--color-background);
     border-radius: 3px;
   }
-  ::-webkit-scrollbar-thumb{
+  ::-webkit-scrollbar-thumb {
     background-color: var(--color-accent);
     border-radius: 3px;
-    &:hover{
+    &:hover {
       background-color: var(--color-accent-light);
     }
   }

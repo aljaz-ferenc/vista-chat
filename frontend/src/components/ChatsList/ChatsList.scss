@@ -1,6 +1,24 @@
-@import '../../sass/variables.scss';
+@import "../../sass/variables.scss";
 
-.conversations-list{
-    background-color: var(--color-chats-list-bg);
-    min-width: 20rem;
+.conversations-list {
+  background-color: var(--color-chats-list-bg);
+  min-width: 20rem;
+}
+
+@media (max-width: 1024px) {
+  .conversations-list {
+    min-width: 15rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .conversations-list {
+    min-width: 10rem;
+  }
+}
+
+@media (max-width: 500px) {
+  .conversations-list {
+    min-width: 4rem !important;
+  }
 }

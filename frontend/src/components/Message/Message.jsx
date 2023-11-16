@@ -1,13 +1,11 @@
 import { useEffect, useRef, useState } from "react";
 import { useUser } from "../../UserContext";
-// import { daysAgo, formatTime } from "../../utils/formatTime";
 import "./Message.scss";
 import FullscreenImage from "../FullscreenImage/FullscreenImage";
 import { AiFillCloseCircle } from "react-icons/ai";
 import { AiFillFile } from "react-icons/ai";
 import { deleteMessage } from "../../api/api";
 import { deleteFiles, deleteImages } from "../../../firebase";
-// import Avatar, { genConfig } from "react-nice-avatar";
 import Avatar from "../Avatar/Avatar";
 import { useNavigate } from "react-router";
 
@@ -17,17 +15,18 @@ export default function Message({ message, users, messages }) {
   const { user: thisUser } = useUser();
   const [selectedImage, setSelectedImage] = useState(null);
   const messageRef = useRef();
-  const isOnline = thisUser.connectedUsers.some((u) => u === author._id && u !== thisUser.id );
-
+  const isOnline = thisUser.connectedUsers.some(
+    (u) => u === author._id && u !== thisUser.id
+  );
 
   function handleDeleteMessage() {
     if (message.images.length > 0) {
       deleteImages(images, thisUser.currentChat);
     }
-    if(message.files.length > 0){
-      deleteFiles(files, thisUser.currentChat)
+    if (message.files.length > 0) {
+      deleteFiles(files, thisUser.currentChat);
     }
-    deleteMessage(message._id, thisUser.currentChat)
+    deleteMessage(message._id, thisUser.currentChat);
   }
 
   function isFirstFromUser() {
@@ -49,11 +48,7 @@ export default function Message({ message, users, messages }) {
         excludedElements={[messageRef]}
       />
       {isFirst && (
-        <Avatar
-        isOnline={isOnline}
-          size={'2rem'}
-          config={author.avatar}
-        />
+        <Avatar isOnline={isOnline} size={"2rem"} config={author.avatar} />
       )}
       <div className="content">
         <p className="text">{text}</p>
@@ -82,8 +77,8 @@ export default function Message({ message, users, messages }) {
           <div className="content__files">
             {files.map((file) => (
               <a key={file.name} className="file" href={file.url}>
-              <AiFillFile/>
-              <p>{file.name}</p>
+                <AiFillFile />
+                <p>{file.name}</p>
               </a>
             ))}
           </div>

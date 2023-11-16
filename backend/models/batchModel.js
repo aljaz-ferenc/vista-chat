@@ -1,6 +1,6 @@
 const mongoose = require('mongoose')
 
-const batchSchema =new mongoose.Schema({
+const batchSchema = new mongoose.Schema({
     messages: [{
         content: String,
         user: mongoose.Schema.Types.ObjectId,

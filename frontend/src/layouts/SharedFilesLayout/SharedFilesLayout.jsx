@@ -9,23 +9,22 @@ export default function SharedFilesLayout() {
   const { user } = useUser();
   const chat = user.chats.filter((ch) => ch._id === user.currentChat)[0];
   const [images, setImages] = useState([]);
-  const [files, setFiles] = useState([])
+  const [files, setFiles] = useState([]);
   const thumbnailRef = useRef();
   const [selectedImage, setSelectedImage] = useState(null);
 
   useEffect(() => {
     if (!user.name || !chat?.messages) return;
     const imgs = [];
-    const fls = []
+    const fls = [];
 
     chat.messages.forEach((msg) => {
       if (msg.images.length > 0) imgs.push(msg.images);
-      if(msg.files.length > 0) fls.push(msg.files)
+      if (msg.files.length > 0) fls.push(msg.files);
     });
 
     setImages(imgs.flat());
-    setFiles(fls.flat())
-
+    setFiles(fls.flat());
   }, [user, chat]);
 
   return (
@@ -38,10 +37,18 @@ export default function SharedFilesLayout() {
       />
 
       <nav className="shared-files-layout__tabs">
-        <button onClick={() => setActiveTab('images')} className={activeTab === "images" ? "active": ''}>
+        <button
+          onClick={() => setActiveTab("images")}
+          className={activeTab === "images" ? "active" : ""}
+        >
           Images
         </button>
-        <button onClick={() => setActiveTab('files')} className={activeTab === "files" ? "active" : ''}>Files</button>
+        <button
+          onClick={() => setActiveTab("files")}
+          className={activeTab === "files" ? "active" : ""}
+        >
+          Files
+        </button>
       </nav>
       {activeTab === "images" ? (
         <div className="shared-images">
@@ -57,23 +64,25 @@ export default function SharedFilesLayout() {
               ))}
             </div>
           )}
-          {
-            images.length === 0 && <p>No shared images yet...</p>
-          }
+          {images.length === 0 && <p>No shared images yet...</p>}
         </div>
       ) : (
         <div className="shared-files">
           {files.length > 0 && (
             <div ref={thumbnailRef} className="shared-files__list">
               {files.map((file) => (
-                <a href={file.url} key={file.id} className="shared-files__list--file">
-                  <AiFillFile/>
+                <a
+                  href={file.url}
+                  key={file.id}
+                  className="shared-files__list--file"
+                >
+                  <AiFillFile />
                   <span>{file.name}</span>
                 </a>
               ))}
             </div>
           )}
-          {files.length === 0 &&  <p>No shared files yet...</p>}
+          {files.length === 0 && <p>No shared files yet...</p>}
         </div>
       )}
     </div>

@@ -1,4 +1,3 @@
-import { useEffect, useRef, useState } from "react";
 import "./User.scss";
 import { useUser } from "../../UserContext";
 import Avatar from "../Avatar/Avatar";
@@ -14,17 +13,19 @@ export default function User() {
   const { user } = useUser();
   const chat = user.chats.filter((ch) => ch._id === user.currentChat)[0];
   const otherUser = chat.users.find((u) => u._id !== user.id);
-  const isOnline = user.connectedUsers.some((u) => u === otherUser._id );
+  const isOnline = user.connectedUsers.some((u) => u === otherUser._id);
 
   return (
     <div className="user">
       <div className="user__top">
         <h2>{otherUser.name}</h2>
         <Avatar size={"10rem"} config={otherUser.avatar} />
-        {isOnline && <div className="user__top--online-status">
-          <GoDotFill color="rgb(0, 187, 0)"  size={25} />
-          <p>Online</p>
-        </div>}
+        {isOnline && (
+          <div className="user__top--online-status">
+            <GoDotFill color="rgb(0, 187, 0)" size={25} />
+            <p>Online</p>
+          </div>
+        )}
         <div className="info">
           <div>
             <AiOutlineMail color="#465cc8" size={25} />

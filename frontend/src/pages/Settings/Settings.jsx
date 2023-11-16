@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useUser } from "../../UserContext";
 import "./Settings.scss";
 import {
@@ -122,7 +122,8 @@ export default function Settings() {
           </div>
           <div className="account__delete">
             <h3>
-              Delete Account <small>This action cannot be undone!</small>
+              Delete Account{" "}
+              <p className="warning">This action cannot be undone!</p>
             </h3>
             <form onSubmit={handleDeleteAccount}>
               <div className="input-group">

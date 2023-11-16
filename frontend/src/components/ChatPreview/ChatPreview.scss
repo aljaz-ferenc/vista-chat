@@ -1,5 +1,5 @@
-@import '../../sass/mixins.scss';
-@import '../../sass/variables.scss';
+@import "../../sass/mixins.scss";
+@import "../../sass/variables.scss";
 
 .chat-preview {
   background-color: var(--color-chats-list-item);
@@ -12,7 +12,7 @@
   align-items: center;
   gap: 1rem;
   box-shadow: 2px 2px 3px var(--color-shadow);
-  &:hover{
+  &:hover {
     outline: 2px solid var(--color-accent);
   }
   &__name {
@@ -22,10 +22,10 @@
   &__last-message {
     font-size: 0.9rem;
     color: var(--color-text);
-    filter: opacity(.6);
+    filter: opacity(0.6);
     font-weight: 300;
   }
-  &__avatar{
+  &__avatar {
     height: 2rem;
     width: 2rem;
   }
@@ -35,7 +35,39 @@
     right: 1rem;
     transform: translateY(-50%);
   }
-  &.active{
+  &.active {
     @include active-line(var(--color-active-line));
+  }
+}
+
+@media (max-width: 1024px) {
+  .chat-preview {
+    gap: 0.5rem;
+    &__name {
+      font-size: 1rem;
+    }
+    &__last-message {
+      font-size: 0.8rem;
+      color: var(--color-text);
+      filter: opacity(0.6);
+      font-weight: 300;
+    }
+  }
+}
+@media (max-width: 768px) {
+  .chat-preview {
+    gap: 0.5rem;
+    &__last-message {
+      display: none;
+    }
+  }
+}
+
+@media (max-width: 500px) {
+  .chat-preview {
+    gap: 0.5rem;
+    &__name {
+      display: none;
+    }
   }
 }

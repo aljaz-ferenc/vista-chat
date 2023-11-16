@@ -4,15 +4,15 @@
   height: 100% !important;
   width: 100%;
   overflow-y: scroll;
-  &__container{
+  &__container {
     height: 100% !important;
     padding: 2rem;
     display: flex;
-    // gap: 10rem;
+    gap: 10%;
     width: 100%;
-    max-width: 60rem;
+    max-width: 70rem;
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-start;
     align-items: flex-start;
     height: fit-content;
   }
@@ -24,6 +24,7 @@
       margin-bottom: 3rem;
     }
     form {
+      margin-top: 2rem;
       gap: 2rem;
       padding-bottom: 2rem;
       .input-group {
@@ -31,9 +32,8 @@
         flex-direction: column;
         width: 20rem;
         margin-bottom: 2rem;
-        input{
+        input {
           color: rgb(75, 75, 75);
-
         }
         span {
           color: red;
@@ -57,7 +57,8 @@
     gap: 1rem;
     .gender {
       gap: 1rem;
-      input, label{
+      input,
+      label {
         cursor: pointer;
       }
       & > div {
@@ -65,11 +66,42 @@
         gap: 0.5rem;
       }
     }
-    &--generate-btn{
+    &--generate-btn {
       @include button;
-      &:disabled{
-        opacity: .5;
+      &:disabled {
+        opacity: 0.5;
       }
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .profile {
+    overflow-x: hidden;
+    &__container {
+      flex-direction: column;
+      align-items: center;
+      gap: 3rem;
+      form {
+        .input-group {
+          margin: 1rem auto;
+          max-width: 90%;
+        }
+        button {
+          margin: 0 auto;
+        }
+      }
+    }
+    &__avatar {
+      padding-bottom: 2rem;
+    }
+  }
+}
+
+@media (max-width: 425px) {
+  .profile {
+    &__container {
+      padding: 1rem 0;
     }
   }
 }

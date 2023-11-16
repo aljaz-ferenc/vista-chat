@@ -35,3 +35,24 @@
     }
   }
 }
+
+@media (max-width: 1024px) {
+  .login-page {
+    .input-group {
+      gap: 0;
+      input {
+        width: 15rem;
+        padding: 0.2rem 1rem;
+        max-width: 100%;
+      }
+    }
+  }
+}
+
+@media (max-width: 425px) {
+  .login-page {
+    &__image {
+      display: none;
+    }
+  }
+}

@@ -1,16 +1,15 @@
 import { useNavigate } from "react-router";
 import "./ChatPreview.scss";
 import { GoDotFill } from "react-icons/go";
-import { trimText } from "../../utils/formatTime";
+import { trimText } from "../../utils/functions";
 import Avatar from "../Avatar/Avatar";
 import { useUser } from "../../UserContext";
-import { useEffect } from "react";
 
 export default function ChatPreview({ user, chat, thisUser }) {
-  const {user: userCtx} = useUser()
+  const { user: userCtx } = useUser();
   const navigate = useNavigate();
-  const lastMessage = chat.lastMessage
-  const isOnline = userCtx.connectedUsers.some(u => u === user._id)
+  const lastMessage = chat.lastMessage;
+  const isOnline = userCtx.connectedUsers.some((u) => u === user._id);
 
   function handleChatClick(chatId) {
     navigate(chatId);
@@ -19,15 +18,14 @@ export default function ChatPreview({ user, chat, thisUser }) {
   return (
     <div
       onClick={() => handleChatClick(chat._id)}
-      className={`chat-preview ${chat._id === thisUser.currentChat ? 'active':''}`}
-      style={{ display: user._id === thisUser.id ? "none" : "block"}}
+      className={`chat-preview ${
+        chat._id === thisUser.currentChat ? "active" : ""
+      }`}
+      style={{ display: user._id === thisUser.id ? "none" : "block" }}
       key={user._id}
     >
-      <Avatar isOnline={isOnline} size='2rem' config={user.avatar}/>
-      <p className="chat-preview__name">{user.name}</p>
-      {/* {!chat.messages.length === 0 && (
-        <p className="chat-preview__last-message"></p>
-      )} */}
+      <Avatar isOnline={isOnline} size="2rem" config={user.avatar} />
+      <p className="chat-preview__name">{user.name.split(" ")[0]}</p>
       {lastMessage.content && lastMessage.content !== "" && (
         <p className="chat-preview__last-message">
           {trimText(lastMessage.content, 20)}

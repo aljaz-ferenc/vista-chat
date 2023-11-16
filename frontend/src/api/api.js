@@ -43,7 +43,7 @@ export async function authenticateUser() {
         }
         return await response.json()
     } catch (err) {
-        return(err.message)
+        return (err.message)
     }
 }
 

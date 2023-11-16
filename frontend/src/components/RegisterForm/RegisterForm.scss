@@ -1,5 +1,42 @@
-@import '../../sass/mixins.scss';
+@import "../../sass/mixins.scss";
 
 .register-form {
   @include form(2.5rem);
+}
+
+@media (max-width: 1024px) {
+  .register-form {
+    max-width: 90%;
+    h2 {
+      font-size: 2.5rem;
+    }
+    h4 {
+      margin-bottom: 1rem;
+    }
+    form {
+      gap: 1rem;
+      button {
+        padding: 0.5rem 0;
+        width: 50%;
+        justify-content: center;
+        display: flex;
+        align-items: center;
+        position: relative;
+        margin-top: 1rem;
+        .error {
+          color: red;
+          position: absolute;
+          top: -2rem;
+          left: 0;
+          width: max-content;
+        }
+        span:nth-child(2) {
+          display: none;
+        }
+        span:nth-child(1) {
+          text-align: center;
+        }
+      }
+    }
+  }
 }

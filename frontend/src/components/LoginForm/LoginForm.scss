@@ -1,6 +1,40 @@
-@import '../../sass/mixins.scss';
+@import "../../sass/mixins.scss";
 
-.login-form{
-    color: inherit;
-    @include form(2.5rem);
+.login-form {
+  color: inherit;
+  @include form(2.5rem);
+}
+
+@media (max-width: 1024px) {
+  .login-form {
+    max-width: 90%;
+    .error {
+      color: red;
+      position: absolute;
+      top: -2rem;
+      left: 0;
+    }
+    h2 {
+      font-size: 2.5rem;
+    }
+    h4 {
+      margin-bottom: 1rem;
+    }
+    form {
+      gap: 1rem;
+      button {
+        padding: 0.5rem 0;
+        width: 50%;
+        justify-content: center;
+        display: flex;
+        align-items: center;
+        span:nth-child(2) {
+          display: none !important;
+        }
+        span:nth-child(1) {
+          text-align: center;
+        }
+      }
+    }
+  }
 }

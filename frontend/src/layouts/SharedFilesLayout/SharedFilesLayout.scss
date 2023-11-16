@@ -1,8 +1,7 @@
 .shared-files-layout {
-  // padding: 0.2rem;
   padding-top: 0;
   width: 100%;
-  h3{
+  h3 {
     margin: 2rem 0;
   }
   &__tabs {
@@ -12,7 +11,7 @@
       background-color: var(--color-user-background);
       border: none;
       outline: none;
-      padding: .1rem 1rem;
+      padding: 0.1rem 1rem;
       cursor: pointer;
       color: var(--color-shared-files-tab-inactive);
       &.active {
@@ -45,7 +44,6 @@
           transform: translate(-50%, -50%);
         }
       }
-
     }
   }
   .shared-files {
@@ -58,14 +56,25 @@
       flex-wrap: wrap;
       flex-direction: column;
       gap: 0.5rem;
-      &--file{
-        // text-decoration: none;
-        // color: var(--color-text);
+      &--file {
         color: inherit;
         cursor: pointer;
         display: flex;
         align-items: center;
         gap: 1rem;
+      }
+    }
+  }
+}
+
+@media (max-width: 1024px) {
+  .shared-files-layout {
+    h3 {
+      margin: 1rem 0;
+    }
+    &__tabs {
+      button {
+        padding: 0.5rem;
       }
     }
   }

@@ -42,13 +42,13 @@ const userSchema = new mongoose.Schema({
     work: String
 }, {
     methods: {
-        async checkPassword(candidate, password){
+        async checkPassword(candidate, password) {
             return await bcrypt.compare(candidate, password)
         }
     }
 })
 
-userSchema.pre('save', async function(){
+userSchema.pre('save', async function () {
     this.password = await bcrypt.hash(this.password, 4)
 })
 

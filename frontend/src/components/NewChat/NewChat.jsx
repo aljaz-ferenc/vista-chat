@@ -49,15 +49,11 @@ export default function NewChat() {
       navigate(`./messages/${existingChat}`);
       updateReadStatus(existingChat);
     } else {
-      // navigate(`./messages/new/${userId}`);
-      //create new chat
-      createNewChat([user.id, userId])
-        .then(res => {
-          if(res.status === 'success'){
-            navigate(`./messages/${res.data._id}`)
-          }
-        })
-      //navigate to new chat
+      createNewChat([user.id, userId]).then((res) => {
+        if (res.status === "success") {
+          navigate(`./messages/${res.data._id}`);
+        }
+      });
     }
     setInput("");
     setFoundUsers([]);

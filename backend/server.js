@@ -38,7 +38,6 @@ const server = app.listen(port, () => {
 const io = socketio(server, {
     cors: {
         origin: [process.env.CLIENT_URL, 'http://localhost:5173'],
-        //   origin: 'http://localhost:5173',
         methods: ['GET', 'POST', 'DELETE', 'PATCH'],
         credentials: true,
     },
@@ -46,18 +45,14 @@ const io = socketio(server, {
 
 io.on('connect', (socket) => {
     io.emit('connectedUsers', connectedUsers.map(u => u.id))
-    // console.log(connectedUsers, '50')
 
     socket.on('disconnect', () => {
-        // console.log('disconnected socket: ', socket.id)
         const user = connectedUsers.find(user => user.socketId === socket.id)
-        console.log(user, ' disconnected')
         if (!user) {
             io.emit('connectedUsers', connectedUsers.map(u => u.id))
             return
         }
         connectedUsers = connectedUsers.filter(user => user.socketId !== socket.id)
-        console.log('connectedUsers', connectedUsers.map(u => u.name))
         if (user) {
             io.emit('connectedUsers', connectedUsers.map(u => u.id))
         }
@@ -67,7 +62,6 @@ io.on('connect', (socket) => {
         connectedUsers = connectedUsers.filter(u => u.id !== user.id)
         connectedUsers.push(user)
         io.emit('connectedUsers', connectedUsers.map(u => u.id))
-        console.log('loginUser')
 
     })
     socket.on('getConnectedUsers', (ack) => {
@@ -77,7 +71,6 @@ io.on('connect', (socket) => {
     socket.on('isTyping', (bool, senderId, receiverId, chatId) => {
         const receiver = connectedUsers.find(u => u.id === receiverId)
         if (!receiver) return
-        // console.log('receiverId: ', receiver.id)
 
         io.to(receiver.socketId).emit('isTyping', chatId, bool)
     })
@@ -98,7 +91,6 @@ EventEmitter.on('newMessage', (chatId, users) => {
         .map((user) => connectedUsers.find((u) => u.id === user.toString()))
         .filter((user) => user !== undefined);
 
-    // console.log('socket newMessage sent to: ', usersArr)
     usersArr.forEach(user => {
         io.to(user.socketId).emit('newMessage', chatId)
     })

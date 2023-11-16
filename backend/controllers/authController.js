@@ -6,7 +6,6 @@ const blacklistedTokens = require('../blacklist')
 
 exports.loginUser = async (req, res) => {
     const { email, password } = req.body
-    console.log(email, password)
 
     try {
         const user = await User.findOne({ email }).select('+password')
@@ -29,7 +28,6 @@ exports.loginUser = async (req, res) => {
 
         res.status(200).json({
             status: 'success',
-            // data: user
         })
 
     } catch (err) {

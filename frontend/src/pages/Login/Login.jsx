@@ -6,7 +6,7 @@ import RegisterForm from "../../components/RegisterForm/RegisterForm";
 import { useEffect, useState } from "react";
 
 export default function Login() {
-  const [state, setState] = useState('login')
+  const [state, setState] = useState("login");
 
   return (
     <div className="login-page">
@@ -14,10 +14,11 @@ export default function Login() {
         <img src={image} alt="" />
       </div>
       <div className="login-page__content">
-        {state === 'login' ? 
-        <LoginForm  setState={setState}/> :
-        <RegisterForm setState={setState}/>
-      }
+        {state === "login" ? (
+          <LoginForm setState={setState} />
+        ) : (
+          <RegisterForm setState={setState} />
+        )}
       </div>
     </div>
   );

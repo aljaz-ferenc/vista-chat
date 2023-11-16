@@ -12,7 +12,6 @@ exports.createChat = async (req, res) => {
     const { users } = req.body
 
     try {
-
         const chat = await Chat.create({ users: [...users] })
         const newBatch = new Batch({ chat: chat._id })
         await newBatch.save()
@@ -81,6 +80,7 @@ exports.getChatById = async (req, res) => {
 
 exports.getPreviousBatch = async (req, res) => {
     const { batchNumber, chatId } = req.params
+    
     const batches = await Batch.find({ chat: chatId }).select('_id')
     const batch = await Batch.findById(batches.at(batchNumber - 1)._id)
 
@@ -103,7 +103,6 @@ exports.addNewMessage = async (req, res) => {
     }
 
     const batches = await Batch.find({ chat: chatId })
-    console.log('batches: ', batches)
     const chat = await Chat.findById(chatId)
     await chat.updateOne({ lastMessage: { user: userId, content: message, readBy: [userId] } })
 
@@ -135,7 +134,6 @@ exports.deleteMessage = async (req, res) => {
     const { messageId, chatId } = req.params
     const chat = await Chat.findById(chatId)
     const batch = await Batch.findOneAndUpdate({ chat: chat._id, 'messages._id': messageId }, { $pull: { messages: { _id: messageId } } }, { new: true })
-    console.log('deleting message')
 
     if (batch?.messages.length === 0) {
         await batch.deleteOne()
@@ -147,7 +145,6 @@ exports.deleteMessage = async (req, res) => {
 
     if (lastMessage?.user) {
         const { user, content } = lastMessage
-        console.log(user, content)
         await chat.updateOne({ lastMessage: { user: user, content: content, readBy: chat.users } })
     } else {
         await chat.updateOne({ lastMessage: { user: null, content: null, readBy: [] } })

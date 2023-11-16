@@ -6,13 +6,13 @@ import { useUser } from "../../UserContext";
 import User from "../User/User";
 
 export default function Chat() {
-  const {user} = useUser()
+  const { user } = useUser();
 
   return (
     <div className="chat">
       <ChatsList />
       <Outlet />
-      {user.currentChat && <User/>}
+      {user.currentChat && <User />}
     </div>
   );
 }

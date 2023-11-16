@@ -1,11 +1,5 @@
-import {
-  createContext,
-  useContext,
-  useEffect,
-  useReducer,
-  useState,
-} from "react";
-import { authenticateUser, getChatById, loginUser } from "./api/api";
+import { createContext, useContext, useEffect, useReducer } from "react";
+import { getChatById } from "./api/api";
 import { io } from "socket.io-client";
 const serverUrl = import.meta.env.VITE_SERVER_URL || "http://localhost:3000";
 const UserContext = createContext();
@@ -101,11 +95,11 @@ function reducer(state, action) {
         ...state,
         socket: action.payload,
       };
-    case 'context/reset':
-      console.log('reset context')
+    case "context/reset":
+      console.log("reset context");
       return {
-        ...initialState
-      }
+        ...initialState,
+      };
   }
 }
 
@@ -152,8 +146,8 @@ export default function UserContextProvider({ children }) {
     dispatch({ type: "authenticated/set", payload: status });
   }
 
-  function resetContext(){
-    dispatch({type: 'context/reset'})
+  function resetContext() {
+    dispatch({ type: "context/reset" });
   }
 
   function updateReadStatus(chatId) {
@@ -170,13 +164,10 @@ export default function UserContextProvider({ children }) {
     if (!user.socket) {
       return setSocket(io(serverUrl, { autoConnect: true }));
     }
-   
 
-    
-    
     user.socket.emit("getConnectedUsers", (connectedUsers) => {
       updateConnectedUsers(connectedUsers);
-      console.log('got users')
+      console.log("got users");
     });
     user.socket.on("connect", () => {
       const userObj = {
@@ -184,11 +175,9 @@ export default function UserContextProvider({ children }) {
         socketId: user.socket.id,
         name: user.name,
       };
-      
 
       user.socket.emit("loginUser", userObj);
-      console.log('loginUser emitted')
-      
+      console.log("loginUser emitted");
     });
 
     user.socket.on("connect_error", (err) => {
@@ -197,7 +186,7 @@ export default function UserContextProvider({ children }) {
       setSocket();
     });
 
-    window.addEventListener('beforeunload', () => {
+    window.addEventListener("beforeunload", () => {
       user.socket.disconnect();
     });
   }, [user.authenticated, user.socket]);
@@ -221,7 +210,7 @@ export default function UserContextProvider({ children }) {
     });
 
     user.socket.on("connectedUsers", (connectedUsers) => {
-      console.log('connected users: ', connectedUsers)
+      console.log("connected users: ", connectedUsers);
       updateConnectedUsers(connectedUsers);
     });
 
@@ -245,7 +234,7 @@ export default function UserContextProvider({ children }) {
         resetCurrentChat,
         setSocket,
         setAuthStatus,
-        resetContext
+        resetContext,
       }}
     >
       {children}
@@ -256,4 +245,3 @@ export default function UserContextProvider({ children }) {
 export function useUser() {
   return useContext(UserContext);
 }
-

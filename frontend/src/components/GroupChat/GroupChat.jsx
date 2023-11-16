@@ -1,10 +1,8 @@
-import { useOutletContext } from 'react-router'
-import './GroupChat.scss'
+import { useOutletContext } from "react-router";
+import "./GroupChat.scss";
 
 export default function GroupChat() {
-  const user = useOutletContext()
+  const user = useOutletContext();
 
-  return (
-    <div>{user.id}</div>
-  )
+  return <div>{user.id}</div>;
 }

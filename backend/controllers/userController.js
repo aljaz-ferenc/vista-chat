@@ -11,12 +11,14 @@ exports.getUsers = async (req, res) => {
 exports.createUser = async (req, res) => {
     const { name, password, passwordConfirm, email } = req.body
 
+    const existingUser = await User.findOne({ email })
     try {
+        if (existingUser) throw new Error('User with this email already exists')
         if (password !== passwordConfirm) throw new Error('Passwords do not match')
 
         const user = await User.create({ name, password, email })
 
-        const token = jwt.sign({user}, process.env.JWT_SECRET, {
+        const token = jwt.sign({ user }, process.env.JWT_SECRET, {
             expiresIn: '24h'
         })
 
@@ -44,8 +46,8 @@ exports.createUser = async (req, res) => {
 exports.queryUsers = async (req, res) => {
     const query = req.params.query
     const regex = new RegExp(query, 'i')
-    
-    const users = await User.find({name: {$regex: regex}}).select('name _id avatar')
+
+    const users = await User.find({ name: { $regex: regex } }).select('name _id avatar')
 
     res.status(200).json({
         data: users
@@ -53,7 +55,7 @@ exports.queryUsers = async (req, res) => {
 }
 
 exports.getUserById = async (req, res) => {
-    const {userId} = req.params
+    const { userId } = req.params
 
     const user = await User.findById(userId).select('name _id')
 
@@ -63,19 +65,19 @@ exports.getUserById = async (req, res) => {
     })
 }
 
-exports.updateUser = async (req,res) => {
-    const {userId} = req.params
+exports.updateUser = async (req, res) => {
+    const { userId } = req.params
     const updates = req.body
 
-    try{
-        const user = await User.findByIdAndUpdate(userId, updates, {new: true})
-        if(!user) throw new Error('User not found')
+    try {
+        const user = await User.findByIdAndUpdate(userId, updates, { new: true })
+        if (!user) throw new Error('User not found')
 
         res.status(200).json({
             status: 'success',
             data: user
         })
-    }catch(err){
+    } catch (err) {
         res.status(404).json({
             status: 'fail',
             message: err.message
@@ -84,13 +86,12 @@ exports.updateUser = async (req,res) => {
 }
 
 exports.deleteUser = async (req, res) => {
-    const {userId} = req.params
-    const {password} = req.body
-    
-    console.log(userId)
-    try{
+    const { userId } = req.params
+    const { password } = req.body
+
+    try {
         const user = await User.findById(userId).select('+password')
-        if(!user) throw new Error('User not found')
+        if (!user) throw new Error('User not found')
 
         const passIsVerified = await user.checkPassword(password, user.password)
         if (!passIsVerified) throw new Error('Password incorrect')
@@ -102,7 +103,7 @@ exports.deleteUser = async (req, res) => {
             data: 'user deleted'
         })
 
-    }catch(err){
+    } catch (err) {
         res.status(404).json({
             status: 'fail',
             message: err.message

@@ -4,7 +4,7 @@ import "./Profile.scss";
 import { updateUser } from "../../api/api";
 import { genConfig } from "react-nice-avatar";
 import Avatar from "../../components/Avatar/Avatar";
-import { formatDate } from "../../utils/formatTime";
+import { formatDate } from "../../utils/functions";
 
 export default function Profile() {
   const { user, updateUser: updateUserContext } = useUser();
