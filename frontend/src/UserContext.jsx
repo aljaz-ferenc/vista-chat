@@ -101,6 +101,11 @@ function reducer(state, action) {
         ...state,
         socket: action.payload,
       };
+    case 'context/reset':
+      console.log('reset context')
+      return {
+        ...initialState
+      }
   }
 }
 
@@ -147,6 +152,10 @@ export default function UserContextProvider({ children }) {
     dispatch({ type: "authenticated/set", payload: status });
   }
 
+  function resetContext(){
+    dispatch({type: 'context/reset'})
+  }
+
   function updateReadStatus(chatId) {
     const chat = user.chats.find((chat) => chat._id === chatId);
 
@@ -161,21 +170,25 @@ export default function UserContextProvider({ children }) {
     if (!user.socket) {
       return setSocket(io(serverUrl, { autoConnect: true }));
     }
-    // console.log("useEffect ", user.socket);
+   
 
+    
+    
+    user.socket.emit("getConnectedUsers", (connectedUsers) => {
+      updateConnectedUsers(connectedUsers);
+      console.log('got users')
+    });
     user.socket.on("connect", () => {
-      // console.log("connect event in context");
-      user.socket.emit("getConnectedUsers", (connectedUsers) => {
-        updateConnectedUsers(connectedUsers);
-      });
       const userObj = {
         id: user.id,
         socketId: user.socket.id,
         name: user.name,
       };
-      // console.log("userObj: ", userObj);
+      
 
       user.socket.emit("loginUser", userObj);
+      console.log('loginUser emitted')
+      
     });
 
     user.socket.on("connect_error", (err) => {
@@ -184,9 +197,9 @@ export default function UserContextProvider({ children }) {
       setSocket();
     });
 
-    // window.addEventListener('beforeunload', () => {
-    //   user.socket.disconnect();
-    // });
+    window.addEventListener('beforeunload', () => {
+      user.socket.disconnect();
+    });
   }, [user.authenticated, user.socket]);
 
   useEffect(() => {
@@ -208,6 +221,7 @@ export default function UserContextProvider({ children }) {
     });
 
     user.socket.on("connectedUsers", (connectedUsers) => {
+      console.log('connected users: ', connectedUsers)
       updateConnectedUsers(connectedUsers);
     });
 
@@ -231,6 +245,7 @@ export default function UserContextProvider({ children }) {
         resetCurrentChat,
         setSocket,
         setAuthStatus,
+        resetContext
       }}
     >
       {children}

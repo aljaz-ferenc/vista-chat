@@ -11,7 +11,7 @@ import Avatar from "../../components/Avatar/Avatar";
 import useAuthAndUpdateUser from "../../utils/useAuthAndUpdateUser";
 
 export default function ChatLayout() {
-  const {  user, setAuthStatus } = useUser();
+  const {  user, setAuthStatus, resetContext } = useUser();
   const location = useLocation();
   const navigate = useNavigate();
   const color = user.theme === "light" ? "rgb(75, 75, 75)" : "white";
@@ -21,6 +21,8 @@ export default function ChatLayout() {
   async function handleLogout() {
     logoutUser().then(() => {
       setAuthStatus(false);
+      user.socket.disconnect()
+      resetContext()
       navigate("/login", { replace: true });
     });
   }
