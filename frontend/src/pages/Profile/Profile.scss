@@ -1,14 +1,21 @@
 @import "../../sass/mixins.scss";
 
 .profile {
-  padding: 2rem;
-  display: flex;
-  gap: 8rem;
+  height: 100% !important;
   width: 100%;
   overflow-y: scroll;
-  display: flex;
-  justify-content: flex-start;
-  height: fit-content;
+  &__container{
+    height: 100% !important;
+    padding: 2rem;
+    display: flex;
+    // gap: 10rem;
+    width: 100%;
+    max-width: 60rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    height: fit-content;
+  }
   &__info {
     display: flex;
     align-items: center;

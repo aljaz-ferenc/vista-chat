@@ -45,13 +45,16 @@ export default function Messages() {
   const otherUser = chat?.users.find((u) => u?._id !== thisUser.id);
   const timerRef = useRef();
   const firstRenderRef = useRef(true);
-
+  const thisChatRef = useRef(null)
+  const isTypingRef = useRef(false)
+  
   useEffect(() => {
     updateChat(chatId);
+    thisChatRef.current = chatId
     return () => {
       resetCurrentChat();
     };
-  }, []);
+  }, [chatId]);
 
   useEffect(() => {
     if (
@@ -135,8 +138,18 @@ export default function Messages() {
         otherUser._id,
         thisUser.currentChat
       );
+      console.log(thisUser.currentChat)
     }
     if (!isTyping) {
+      thisUser.socket.emit(
+        "isTyping",
+        false,
+        thisUser.id,
+        otherUser._id,
+        thisUser.currentChat
+      );
+    }
+    return () => {
       thisUser.socket.emit(
         "isTyping",
         false,
@@ -150,13 +163,22 @@ export default function Messages() {
   useEffect(() => {
     if (!thisUser.socket) return;
 
-    thisUser.socket.on("isTyping", (chatId, bool) => {
-      if (thisUser.currentChat === chatId){
-        console.log(otherUser.name)
-        setOtherIsTyping(bool);
+    thisUser.socket.on("isTyping", (otherChatId, bool) => {
+      const thisChat = thisChatRef.current
+
+      if(!thisChat || !otherChatId) return
+
+      if (otherChatId === thisChat){
+        isTypingRef.current = bool
+          setOtherIsTyping(isTypingRef.current);
       }
     });
-  }, [thisUser.socket, thisUser.currentChat, otherUser]);
+    return () => {
+      isTypingRef.current = false
+      setOtherIsTyping(false)
+    }
+  }, [thisUser.socket, thisUser.currentChat, chatId]);
+
 
   async function handleSendMessage(e) {
     e.preventDefault();

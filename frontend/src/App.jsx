@@ -3,35 +3,30 @@ import {
   Route,
   RouterProvider,
   createRoutesFromElements,
+  useNavigate,
 } from "react-router";
 import { createBrowserRouter } from "react-router-dom";
 import Login from "./pages/Login/Login";
 import Chat from "./components/Chat/Chat";
-import { loader as ChatLayoutLoader } from "./layouts/ChatLayout/ChatLayout";
 import ChatLayout from "./layouts/ChatLayout/ChatLayout";
-import UserContextProvider, { useUser } from "./UserContext";
-import DirectMessages from "./components/Chat/Chat";
-import GroupChat from "./components/GroupChat/GroupChat";
+import { useUser } from "./UserContext";
 import Settings from "./pages/Settings/Settings";
-import NewChat from "./components/NewChat/NewChat";
 import Messages from "./components/Messages/Messages";
-import NewMessage from "./components/NewMessage/NewMessage";
 import { useEffect } from "react";
 import Profile from "./pages/Profile/Profile";
+import { authenticateUser } from "./api/api";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route errorElement={<Navigate to='/chat/messages'/>}>
-      <Route path="/" element={<Navigate to="/chat" />} />
+      <Route path="/" element={<Navigate to="/login" />} />
       <Route path="login" element={<Login />} />
       <Route path="chat" element={<ChatLayout />} >
         <Route path="messages" element={<Chat />}>
           <Route path=":chatId" element={<Messages />}  />
-          {/* <Route path="new/:userId" element={<NewMessage />} /> */}
         </Route>
         <Route path="settings" element={<Settings />} />
         <Route path="profile" element={<Profile />} />
-        {/* <Route path="group-chat" element={<GroupChat/>}/> */}
       </Route>
     </Route>
   )

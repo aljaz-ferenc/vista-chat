@@ -5,11 +5,10 @@ import {
   useReducer,
   useState,
 } from "react";
-import { getChatById } from "./api/api";
+import { authenticateUser, getChatById, loginUser } from "./api/api";
 import { io } from "socket.io-client";
+const serverUrl = import.meta.env.VITE_SERVER_URL || "http://localhost:3000";
 const UserContext = createContext();
-const serverUrl = import.meta.env.VITE_SERVER_URL || 'http://localhost:3000'
-// const socket = io('http://localhost:3000', {autoConnect:true})
 
 const initialState = {
   name: "",
@@ -20,7 +19,8 @@ const initialState = {
   currentChat: null,
   lastBatch: null,
   theme: null,
-  connectedUsers: []
+  connectedUsers: [],
+  authenticated: "unathorized",
 };
 
 function reducer(state, action) {
@@ -45,20 +45,29 @@ function reducer(state, action) {
         chats: updatedChats,
         lastBatch: action.payload.lastBatch,
       };
+    case "authenticated/set":
+      return {
+        ...state,
+        authenticated: action.payload,
+      };
 
     case "batch/add":
-      const chatIndex = state.chats.findIndex(chat => chat._id === action.payload.chatId)
-      const newChat = state.chats[chatIndex]
-      const prevMessages = newChat.messages
-      const newMessages = action.payload.messages
-      newChat.messages = [...newMessages, ...prevMessages]
+      const chatIndex = state.chats.findIndex(
+        (chat) => chat._id === action.payload.chatId
+      );
+      const newChat = state.chats[chatIndex];
+      const prevMessages = newChat.messages;
+      const newMessages = action.payload.messages;
+      newChat.messages = [...newMessages, ...prevMessages];
 
-      const otherChats = state.chats.filter(chat => chat._id !==action.payload.chatId)
-      const newChats = [newChat, ...otherChats ]
+      const otherChats = state.chats.filter(
+        (chat) => chat._id !== action.payload.chatId
+      );
+      const newChats = [newChat, ...otherChats];
 
       return {
         ...state,
-        chats: newChats
+        chats: newChats,
       };
 
     case "currentChat/set":
@@ -75,31 +84,31 @@ function reducer(state, action) {
     case "theme/set":
       return {
         ...state,
-        theme: action.payload
-      }
-    case 'connectedUsers/update':
+        theme: action.payload,
+      };
+    case "connectedUsers/update":
       return {
         ...state,
-        connectedUsers: action.payload
-      }
-    case 'connectedUsers/remove':
+        connectedUsers: action.payload,
+      };
+    case "connectedUsers/remove":
       return {
         ...state,
-        connectedUsers: action.payload
-      }
-    case 'socket/set':
+        connectedUsers: action.payload,
+      };
+    case "socket/set":
       return {
         ...state,
-        socket: action.payload
-      }
+        socket: action.payload,
+      };
   }
 }
 
 export default function UserContextProvider({ children }) {
   const [user, dispatch] = useReducer(reducer, initialState);
 
-  function setSocket(socket){
-    dispatch({type: 'socket/set', payload: socket})
+  function setSocket(socket) {
+    dispatch({ type: "socket/set", payload: socket });
   }
 
   function updateUser(userData) {
@@ -122,16 +131,20 @@ export default function UserContextProvider({ children }) {
     dispatch({ type: "currentChat/reset" });
   }
 
-  function addBatch(chatId, messages){
-    dispatch({type: 'batch/add', payload: {chatId, messages}})
+  function addBatch(chatId, messages) {
+    dispatch({ type: "batch/add", payload: { chatId, messages } });
   }
 
-  function setTheme(theme){
-    dispatch({type: 'theme/set', payload: theme})
+  function setTheme(theme) {
+    dispatch({ type: "theme/set", payload: theme });
   }
 
-  function updateConnectedUsers(connectedUsers){
-    dispatch({type: 'connectedUsers/update', payload: connectedUsers})
+  function updateConnectedUsers(connectedUsers) {
+    dispatch({ type: "connectedUsers/update", payload: connectedUsers });
+  }
+
+  function setAuthStatus(status) {
+    dispatch({ type: "authenticated/set", payload: status });
   }
 
   function updateReadStatus(chatId) {
@@ -144,18 +157,37 @@ export default function UserContextProvider({ children }) {
   }
 
   useEffect(() => {
-    if(user.socket) return
-    setSocket(io(serverUrl, {autoConnect:true}))
-  }, [user.socket])
+    if (!user.authorized || !user.id) return;
+    if (!user.socket) {
+      return setSocket(io(serverUrl, { autoConnect: true }));
+    }
+    // console.log("useEffect ", user.socket);
 
-useEffect(() => {
-  if (!user.socket) return;
-  user.socket.emit('getConnectedUsers', (connectedUsers) => {
-    console.log('got users')
-    updateConnectedUsers(connectedUsers)
-  })
+    user.socket.on("connect", () => {
+      // console.log("connect event in context");
+      user.socket.emit("getConnectedUsers", (connectedUsers) => {
+        updateConnectedUsers(connectedUsers);
+      });
+      const userObj = {
+        id: user.id,
+        socketId: user.socket.id,
+        name: user.name,
+      };
+      // console.log("userObj: ", userObj);
 
-}, [user.socket])
+      user.socket.emit("loginUser", userObj);
+    });
+
+    user.socket.on("connect_error", (err) => {
+      console.log(err);
+      console.log(err.message);
+      setSocket();
+    });
+
+    // window.addEventListener('beforeunload', () => {
+    //   user.socket.disconnect();
+    // });
+  }, [user.authenticated, user.socket]);
 
   useEffect(() => {
     if (!user.socket) return;
@@ -175,9 +207,9 @@ useEffect(() => {
       addChat(chat);
     });
 
-    user.socket.on('connectedUsers', connectedUsers => {
-      updateConnectedUsers(connectedUsers)
-    })
+    user.socket.on("connectedUsers", (connectedUsers) => {
+      updateConnectedUsers(connectedUsers);
+    });
 
     return () => {
       user.socket.removeAllListeners("newMessage");
@@ -197,7 +229,8 @@ useEffect(() => {
         updateReadStatus,
         setCurrentChat,
         resetCurrentChat,
-        setSocket
+        setSocket,
+        setAuthStatus,
       }}
     >
       {children}
@@ -208,3 +241,4 @@ useEffect(() => {
 export function useUser() {
   return useContext(UserContext);
 }
+

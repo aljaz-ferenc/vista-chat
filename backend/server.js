@@ -46,10 +46,10 @@ const io = socketio(server, {
 
 io.on('connect', (socket) => {
     io.emit('connectedUsers', connectedUsers.map(u =>u.id))
-    console.log(connectedUsers, '50')
+    // console.log(connectedUsers, '50')
     
     socket.on('disconnect', () => {
-        console.log('disconnected socket: ', socket.id)
+        // console.log('disconnected socket: ', socket.id)
         const user = connectedUsers.find(user => user.socketId === socket?.id)
         if(!user){
             io.emit('connectedUsers', connectedUsers.map(u =>u.id))
@@ -76,8 +76,8 @@ io.on('connect', (socket) => {
 
     socket.on('isTyping', (bool, senderId, receiverId, chatId) => {
         const receiver = connectedUsers.find(u => u.id === receiverId)
-
         if(!receiver) return
+        // console.log('receiverId: ', receiver.id)
 
         io.to(receiver.socketId).emit('isTyping', chatId, bool)
     })

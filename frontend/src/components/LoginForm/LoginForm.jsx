@@ -1,12 +1,15 @@
 import "./LoginForm.scss";
 import { BsArrowRightCircleFill } from "react-icons/bs";
 import { useForm } from "react-hook-form";
-import { loginUser } from "../../api/api";
+import { authenticateUser, loginUser } from "../../api/api";
 import {useNavigate} from 'react-router-dom'
+import useAuthAndUpdateUser from "../../utils/useAuthAndUpdateUser";
 
 export default function LoginForm({ setState }) {
   const { register, handleSubmit } = useForm();
   const navigate = useNavigate()
+
+  useAuthAndUpdateUser()
 
   function submitForm(formData){
     loginUser(formData)
