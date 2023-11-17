@@ -45,6 +45,7 @@ Share images and files seamlessly within conversations, securely stored in Fireb
 [Test the app here](https://vista-chat-af.netlify.app/login) with provided demo users for a real-time chat experience. Open two different browsers, log in with one test user each, and interact between users. Explore the app's features by sending messages and observing live updates.
 
 Feel free to send messages to test the features mentioned above. Users can delete their own messages by hovering and clicking the close button.
+
 ![Delete Message](./readme-images/delete-message.png)
 
 NOTE - if the app doesn't log you in immediately, it may take up to 30 seconds for the server to start up.
