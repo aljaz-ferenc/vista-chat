@@ -5,9 +5,10 @@ import { loginUser } from "../../api/api";
 import { useNavigate } from "react-router-dom";
 import useAuthAndUpdateUser from "../../utils/useAuthAndUpdateUser";
 import { useState } from "react";
+import { AiFillCloseCircle } from "react-icons/ai";
 
 export default function LoginForm({ setState }) {
-  const { register, handleSubmit } = useForm();
+  const { register, handleSubmit, setValue } = useForm();
   const navigate = useNavigate();
   const [error, setError] = useState("");
 
@@ -26,8 +27,32 @@ export default function LoginForm({ setState }) {
       });
   }
 
+  function setTestData1() {
+    setValue("email", "user1@email.com");
+    setValue("password", "user1234");
+  }
+
+  function setTestData2() {
+    setValue("email", "user3@email.com");
+    setValue("password", "user1234");
+  }
+
   return (
     <div className="login-form">
+      <div className="login-form__test">
+        <p>
+          For <strong>testing</strong>, you can open the app in two browsers and login with
+          two different test users.
+        </p>
+        <p>
+          Feel free to send messages. A message can be deleted and removed from the database by
+          hovering over it and clicking <AiFillCloseCircle />.
+        </p>
+        <div className="login-form__test--users">
+          <button onClick={setTestData1}>Test User 1</button>
+          <button onClick={setTestData2}>Test User 2</button>
+        </div>
+      </div>
       <h2>Login</h2>
       <h4>Welcome back! Sign in to join the chat.</h4>
       <form noValidate onSubmit={handleSubmit(submitForm)}>

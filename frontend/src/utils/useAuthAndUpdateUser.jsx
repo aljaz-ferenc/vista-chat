@@ -27,7 +27,7 @@ export default function useAuthAndUpdateUser() {
             chats: chatsData,
             authorized: true,
           });
-          navigate("/chat");
+          navigate("/chat/messages");
         } else {
           throw new Error("Invalid or missing token");
         }

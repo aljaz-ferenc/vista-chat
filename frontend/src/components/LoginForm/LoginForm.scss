@@ -3,6 +3,28 @@
 .login-form {
   color: inherit;
   @include form(2.5rem);
+
+  &__test{
+    line-height: 1.2;
+    margin: 1rem;
+    max-width: 20rem;
+    border: 2px solid rgb(223, 43, 43);
+    padding: .5rem;
+    &--users{
+      margin-top: 1rem;
+      display: flex;
+      justify-content: space-between;
+      gap: 1rem;
+      button{
+        @include button;
+        background-color: #1755a2;
+      }
+    }
+    & p{
+      font-size: .8rem;
+      margin-bottom: .5rem;
+    }
+  }
 }
 
 @media (max-width: 1024px) {
@@ -14,6 +36,7 @@
       top: -2rem;
       left: 0;
     }
+    
     h2 {
       font-size: 2.5rem;
     }

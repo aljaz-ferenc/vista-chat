@@ -104,7 +104,7 @@ export default function NewChat() {
               key={foundUser._id}
               ref={foundUsersContainerRef}
             >
-              <Avatar size="2rem" config={foundUser.avatar} />
+              <Avatar size="2rem" isOnline={foundUser.isOnline} config={foundUser.avatar} />
               <span>{foundUser.name}</span>
             </div>
           ))}
