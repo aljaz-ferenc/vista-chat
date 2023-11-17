@@ -4,14 +4,14 @@ Vista Chat is a real-time messaging platform designed to facilitate seamless com
 
 ![Screenshot](./readme-images/app.png)
 
+---
+
 ## Technologies Used
 
 - **Frontend**: React.js
 - **Backend**: Node.js/Express.js
 - **Real-time Communication**: Socket&#46;io
 - **Database**: MongoDB, Firebase Storage
-
----
 
 ## Key Features
 
@@ -24,18 +24,21 @@ Vista Chat provides functionalities for account management, enabling users to cr
 Enjoy real-time message delivery through web sockets using the Socket&#46;io library. Along with pushing new messages to the UI, the app also supports additional features that update the UI in real-time:
 
 - new message notifications,
+
   ![New Message](./readme-images/new-message.png)
+
 - online status updates,
+
   ![Online Status](./readme-images/online.png)
+
 - and typing indicators during chats.
+
   ![Typing](./readme-images/typing.png)
 
 ### File Sharing
 
 Share images and files seamlessly within conversations, securely stored in Firebase's Storage for a richer chat experience.
 ![Shared Images](./readme-images/images.png)
-
----
 
 ## Try It Out
 
