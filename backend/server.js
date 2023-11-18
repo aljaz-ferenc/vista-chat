@@ -10,7 +10,6 @@ const socketio = require('socket.io')
 const EventEmitter = require('./EventEmitter')
 
 let connectedUsers = []
-
 const DB = process.env.DATABASE
 
 mongoose.connect(DB).then(() => console.log('Databse connected successfully'))

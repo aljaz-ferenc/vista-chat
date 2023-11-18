@@ -3,18 +3,19 @@ import "./Messages.scss";
 import { useEffect, useRef, useState } from "react";
 import { getChatById, getPreviousBatch, sendMessage } from "../../api/api";
 import { useUser } from "../../UserContext";
-import { FaPaperPlane } from "react-icons/fa";
 import Message from "../Message/Message";
 import { PulseLoader } from "react-spinners";
+import { FaPaperPlane } from "react-icons/fa";
 import { BsImages } from "react-icons/bs";
-import Thumbnail from "../Thumbnail/Thumbnail";
-import { sendFiles, sendImages } from "../../../firebase";
-import Avatar from "../Avatar/Avatar";
 import { BsEmojiSmile } from "react-icons/bs";
 import EmojiPicker from "emoji-picker-react";
 import { PiFilesLight } from "react-icons/pi";
+import Thumbnail from "../Thumbnail/Thumbnail";
+import { sendFiles, sendImages } from "../../../firebase";
+import Avatar from "../Avatar/Avatar";
 import { AiOutlineFile } from "react-icons/ai";
 import { IoIosCloseCircleOutline } from "react-icons/io";
+import MessageInput from "../MessageInput/MessageInput";
 
 export default function Messages() {
   const [images, setImages] = useState([]);
@@ -35,9 +36,9 @@ export default function Messages() {
 
   const messagesElementRef = useRef();
   const requestedBatchRef = useRef(null);
-  const imageInputRef = useRef();
-  const fileInputRef = useRef();
-  const inputFieldRef = useRef();
+  // const imageInputRef = useRef();
+  // const fileInputRef = useRef();
+  // const inputFieldRef = useRef();
   const emojiPickerRef = useRef();
   const openEmojiPickerBtnRef = useRef();
   const { chatId } = useParams();
@@ -179,50 +180,27 @@ export default function Messages() {
     };
   }, [thisUser.socket, thisUser.currentChat, chatId]);
 
-  async function handleSendMessage(e) {
-    e.preventDefault();
-    if (images.length === 0 && files.length === 0 && !input) return;
-    let imagesArr = [];
+  // function handleUploadImage(e) {
+  //   const thumbs = Array.from(e.target.files).map((file) => {
+  //     return URL.createObjectURL(file);
+  //   });
+  //   setThumbnails(thumbs);
+  //   const images = Array.from(e.target.files);
+  //   setImages(images);
+  // }
 
-    if (images.length > 0) {
-      imagesArr = await sendImages(images, chatId);
-    }
-
-    let filesArr = [];
-    if (files.length > 0) {
-      filesArr = await sendFiles(files, chatId);
-    }
-
-    sendMessage(input, thisUser.id, chatId, imagesArr, filesArr).then((res) => {
-      setImages([]);
-      setFiles([]);
-      setThumbnails([]);
-      setInput("");
-      console.log("message sent");
-    });
-  }
-
-  function handleUploadImage(e) {
-    const thumbs = Array.from(e.target.files).map((file) => {
-      return URL.createObjectURL(file);
-    });
-    setThumbnails(thumbs);
-    const images = Array.from(e.target.files);
-    setImages(images);
-  }
-
-  function handleUploadFile(e) {
-    const files = Array.from(e.target.files);
-    setFiles((prev) => [...prev, ...files]);
-  }
+  // function handleUploadFile(e) {
+  //   const files = Array.from(e.target.files);
+  //   setFiles((prev) => [...prev, ...files]);
+  // }
 
   function handleRemoveFile(fileId) {
     setFiles((prev) => prev.filter((file) => file.id !== fileId));
   }
 
-  function handleSelectEmoji(e) {
-    setInput((prev) => `${prev} ${e.emoji}`);
-  }
+  // function handleSelectEmoji(e) {
+  //   setInput((prev) => `${prev} ${e.emoji}`);
+  // }
 
   useEffect(() => {
     const handleClickOutside = (e) => {
@@ -311,65 +289,19 @@ export default function Messages() {
           ))}
         </div>
       )}
-      <form onSubmit={handleSendMessage} className="messages__input">
-        <input
-          onChange={(e) => setInput(e.target.value)}
-          value={input}
-          type="text"
-          ref={inputFieldRef}
-        />
-        <button type="submit" className="send-message-btn">
-          <FaPaperPlane className="icon" color="#fff" />
-        </button>
-        <button className="upload-img-btn" type="button">
-          <BsImages
-            onClick={() => imageInputRef.current.click()}
-            color="#6690ea"
-            size={25}
-          />
-        </button>
-
-        <button className="upload-file-btn" type="button">
-          <PiFilesLight
-            onClick={() => fileInputRef.current.click()}
-            color="#6690ea"
-            size={30}
-          />
-        </button>
-
-        <button
-          className="emojis-btn"
-          type="button"
-          onClick={() => setEmojiPickerIsOpen(true)}
-          ref={openEmojiPickerBtnRef}
-        >
-          <BsEmojiSmile color="#6690ea" size={25} />
-        </button>
-        <input
-          onChange={handleUploadImage}
-          accept="image/*"
-          ref={imageInputRef}
-          type="file"
-          hidden
-          multiple
-        />
-        <input
-          onChange={handleUploadFile}
-          accept="audio/*, video/*, text/*, application/pdf"
-          ref={fileInputRef}
-          type="file"
-          hidden
-          multiple
-        />
-        {emojiPickerIsOpen && (
-          <div className="emoji-picker" ref={emojiPickerRef}>
-            <EmojiPicker onEmojiClick={handleSelectEmoji} />
-          </div>
-        )}
-        {otherIsTyping && (
-          <p className="is-typing">{otherUser.name} is typing...</p>
-        )}
-      </form>
+      <MessageInput
+        setInput={setInput}
+        openEmojiPickerBtnRef={openEmojiPickerBtnRef}
+        emojiPickerIsOpen={emojiPickerIsOpen}
+        images={images}
+        files={files}
+        input={input}
+        setImages={setImages}
+        otherIsTyping={otherIsTyping}
+        chatId={chatId}
+        setFiles={setFiles}
+        setThumbnails={setThumbnails}
+      />
     </div>
   );
 }

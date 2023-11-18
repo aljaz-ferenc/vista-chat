@@ -8,7 +8,6 @@ export default function ChatsList() {
   return (
     <div className="conversations-list">
       <div className="conversations-list__previews">
-        <div>
           {thisUser.chats.map((chat) => {
             return (
               <ChatPreview
@@ -19,7 +18,6 @@ export default function ChatsList() {
               />
             );
           })}
-        </div>
       </div>
     </div>
   );

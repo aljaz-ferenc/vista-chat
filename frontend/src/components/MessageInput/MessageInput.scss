@@ -1,0 +1,83 @@
+.messages-input {
+    width: 100%;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    padding: 1rem;
+    background-color: var(--color-messages-background);
+    color: rgb(75, 75, 75);
+    input:first-child {
+      width: 100%;
+      border-radius: 20px;
+      border: 1px solid gray;
+      height: 2.5rem;
+      padding: 0 1rem;
+      outline: none;
+      padding-left: 7.5rem;
+      &:focus-visible {
+        border: 1px solid var(--color-primary);
+      }
+    }
+    .is-typing {
+      font-size: 0.8rem;
+      text-align: right;
+      position: absolute;
+      bottom: 3.5rem;
+      right: 2rem;
+      z-index: 50;
+      color: var(--color-text);
+    }
+
+    .send-message-btn {
+      position: absolute;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border: none;
+      top: 50%;
+      right: 1.3rem;
+      transform: translateY(-50%);
+      background-color: var(--color-primary);
+      height: calc(90% - 2rem);
+      padding: 0.5rem;
+      width: 3.5rem;
+      border-radius: 20px;
+      cursor: pointer;
+      transition: all 0.2s;
+      overflow: hidden;
+      .icon {
+        width: 100%;
+        height: 100%;
+      }
+      &:hover {
+        background-color: var(--color-accent);
+        padding: 0.3rem;
+      }
+    }
+    .upload-img-btn,
+    .emojis-btn,
+    .upload-file-btn {
+      position: absolute;
+      left: 2rem;
+      top: 50%;
+      transform: translateY(-50%);
+      border: none;
+      background-color: transparent;
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+      opacity: 0.5;
+      &:hover {
+        opacity: 1;
+      }
+      &:hover svg {
+        fill: var(--color-accent);
+      }
+    }
+    .emojis-btn {
+      left: 6.5rem;
+    }
+    .upload-file-btn {
+      left: 4.1rem;
+    }
+  }

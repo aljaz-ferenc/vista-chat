@@ -14,11 +14,17 @@
 @media (max-width: 768px) {
   .conversations-list {
     min-width: 10rem;
+    &__previews{
+        display: flex;
+    }
   }
 }
 
 @media (max-width: 500px) {
   .conversations-list {
     min-width: 4rem !important;
+    position: sticky;
+    top: 0;
+    padding: .2rem ;
   }
 }

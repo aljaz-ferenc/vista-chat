@@ -96,7 +96,6 @@ function reducer(state, action) {
         socket: action.payload,
       };
     case "context/reset":
-      console.log("reset context");
       return {
         ...initialState,
       };
@@ -167,7 +166,6 @@ export default function UserContextProvider({ children }) {
 
     user.socket.emit("getConnectedUsers", (connectedUsers) => {
       updateConnectedUsers(connectedUsers);
-      console.log("got users");
     });
     user.socket.on("connect", () => {
       const userObj = {
@@ -177,11 +175,9 @@ export default function UserContextProvider({ children }) {
       };
 
       user.socket.emit("loginUser", userObj);
-      console.log("loginUser emitted");
     });
 
     user.socket.on("connect_error", (err) => {
-      console.log(err);
       console.log(err.message);
       setSocket();
     });
@@ -195,7 +191,6 @@ export default function UserContextProvider({ children }) {
     if (!user.socket) return;
 
     user.socket.on("newMessage", (chatId) => {
-      console.log("context newMessage event");
       let addUserToReadBy = chatId === user.currentChat;
 
       getChatById(chatId, user.id, addUserToReadBy).then((res) => {
@@ -210,7 +205,6 @@ export default function UserContextProvider({ children }) {
     });
 
     user.socket.on("connectedUsers", (connectedUsers) => {
-      console.log("connected users: ", connectedUsers);
       updateConnectedUsers(connectedUsers);
     });
 

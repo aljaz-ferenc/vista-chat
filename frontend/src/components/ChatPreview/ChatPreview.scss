@@ -63,11 +63,39 @@
   }
 }
 
+@media (max-width: 768px) {
+  .chat-preview {
+    max-width: 10rem;
+  }
+}
 @media (max-width: 500px) {
   .chat-preview {
-    gap: 0.5rem;
+    z-index: 0;
+    border-radius: 50%;
+    margin: 0;
+    padding: 0;
+    background: none;
+    min-width: 0;
+    box-shadow: none;
+    filter: drop-shadow(3px 3px 2px gray);
+    border: 2px solid transparent;
+    transition: border .2s;
+    .avatar{
+      width: 3rem !important;
+      height: 3rem !important;
+    }
     &__name {
       display: none;
+    }
+    &:hover {
+      border: 2px solid var(--color-accent);
+      outline: none;
+    }
+    &.active{
+      border: 2px solid var(--color-accent);
+      &::before{
+        display: none !important;
+      }
     }
   }
 }

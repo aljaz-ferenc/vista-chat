@@ -1,3 +1,10 @@
 .chat {
   display: flex;
 }
+
+@media(max-width: 768px){
+  .chat{
+    flex-direction: column;
+    overflow-y: scroll !important;
+  }
+}
