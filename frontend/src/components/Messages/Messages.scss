@@ -57,7 +57,7 @@
   .files {
     background-color: var(--color-messages-background);
     cursor: default;
-    // padding-bottom: 2.5rem;
+    padding-bottom: 2.5rem;
     position: absolute;
     bottom: 2.5rem;
     width: 100%;
@@ -79,7 +79,6 @@
 
 @media (max-width: 768px) {
   .messages {
-    height: calc(100% - 8.2rem) !important;
     padding-top: 1rem;
     &__top {
       gap: 1rem;
