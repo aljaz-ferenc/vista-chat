@@ -1,12 +1,46 @@
-.messages-input {
-    width: 100%;
+.messages-input-container {
+  position: absolute;
+  background-color: var(--color-messages-background);
+  height: fit-content;
+  .message-buttons {
+    display: flex;
     position: absolute;
-    bottom: 0;
+    top: 0;
     left: 0;
-    padding: 1rem;
-    background-color: var(--color-messages-background);
+    height: 100%;
+    z-index: 1;
+    gap: .5rem;
+    padding: 0.5rem 1rem;
+    & button {
+      left: 2rem;
+      top: 0;
+      border: none;
+      background-color: transparent;
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+      opacity: 0.5;
+      &:hover {
+        opacity: 1;
+      }
+      &:hover svg {
+        fill: var(--color-accent);
+      }
+    }
+  }
+  .emojis-btn {
+    left: 6.5rem;
+  }
+  .upload-file-btn {
+    left: 4.1rem;
+  }
+  width: 100%;
+  bottom: 0;
+  left: 0;
+  .messages-input {
+    position: relative;
     color: rgb(75, 75, 75);
-    input:first-child {
+    & input:first-child {
       width: 100%;
       border-radius: 20px;
       border: 1px solid gray;
@@ -35,10 +69,10 @@
       align-items: center;
       border: none;
       top: 50%;
-      right: 1.3rem;
+      right: 0.2rem;
       transform: translateY(-50%);
       background-color: var(--color-primary);
-      height: calc(90% - 2rem);
+      height: calc(100% - 0.4rem);
       padding: 0.5rem;
       width: 3.5rem;
       border-radius: 20px;
@@ -54,30 +88,5 @@
         padding: 0.3rem;
       }
     }
-    .upload-img-btn,
-    .emojis-btn,
-    .upload-file-btn {
-      position: absolute;
-      left: 2rem;
-      top: 50%;
-      transform: translateY(-50%);
-      border: none;
-      background-color: transparent;
-      display: flex;
-      align-items: center;
-      cursor: pointer;
-      opacity: 0.5;
-      &:hover {
-        opacity: 1;
-      }
-      &:hover svg {
-        fill: var(--color-accent);
-      }
-    }
-    .emojis-btn {
-      left: 6.5rem;
-    }
-    .upload-file-btn {
-      left: 4.1rem;
-    }
   }
+}

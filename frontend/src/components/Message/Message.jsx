@@ -7,7 +7,6 @@ import { AiFillFile } from "react-icons/ai";
 import { deleteMessage } from "../../api/api";
 import { deleteFiles, deleteImages } from "../../../firebase";
 import Avatar from "../Avatar/Avatar";
-import { useNavigate } from "react-router";
 
 export default function Message({ message, users, messages }) {
   const { content: text, user, images, files } = message;
@@ -62,10 +61,10 @@ export default function Message({ message, users, messages }) {
 
         {images.length > 0 && (
           <div className="content__images">
-            {images.map((img) => {
+            {images.map((img, i) => {
               return (
                 <img
-                  key={img.id}
+                  key={img.i}
                   onClick={() => setSelectedImage(img.url)}
                   src={img.url}
                 />
@@ -75,8 +74,8 @@ export default function Message({ message, users, messages }) {
         )}
         {files?.length > 0 && (
           <div className="content__files">
-            {files.map((file) => (
-              <a key={file.name} className="file" href={file.url}>
+            {files.map((file, i) => (
+              <a key={i} className="file" href={file.url}>
                 <AiFillFile />
                 <p>{file.name}</p>
               </a>

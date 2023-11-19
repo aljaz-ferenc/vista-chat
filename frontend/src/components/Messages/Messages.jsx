@@ -1,19 +1,13 @@
 import { useParams } from "react-router";
 import "./Messages.scss";
 import { useEffect, useRef, useState } from "react";
-import { getChatById, getPreviousBatch, sendMessage } from "../../api/api";
+import { getChatById, getPreviousBatch} from "../../api/api";
 import { useUser } from "../../UserContext";
 import Message from "../Message/Message";
 import { PulseLoader } from "react-spinners";
-import { FaPaperPlane } from "react-icons/fa";
-import { BsImages } from "react-icons/bs";
-import { BsEmojiSmile } from "react-icons/bs";
-import EmojiPicker from "emoji-picker-react";
-import { PiFilesLight } from "react-icons/pi";
 import Thumbnail from "../Thumbnail/Thumbnail";
-import { sendFiles, sendImages } from "../../../firebase";
 import Avatar from "../Avatar/Avatar";
-import { AiOutlineFile } from "react-icons/ai";
+import { AiFillFile } from "react-icons/ai";
 import { IoIosCloseCircleOutline } from "react-icons/io";
 import MessageInput from "../MessageInput/MessageInput";
 
@@ -36,9 +30,6 @@ export default function Messages() {
 
   const messagesElementRef = useRef();
   const requestedBatchRef = useRef(null);
-  // const imageInputRef = useRef();
-  // const fileInputRef = useRef();
-  // const inputFieldRef = useRef();
   const emojiPickerRef = useRef();
   const openEmojiPickerBtnRef = useRef();
   const { chatId } = useParams();
@@ -139,9 +130,8 @@ export default function Messages() {
         otherUser._id,
         thisUser.currentChat
       );
-      console.log(thisUser.currentChat);
     }
-    if (!isTyping) {
+    if (!isTyping) {{}
       thisUser.socket.emit(
         "isTyping",
         false,
@@ -180,27 +170,9 @@ export default function Messages() {
     };
   }, [thisUser.socket, thisUser.currentChat, chatId]);
 
-  // function handleUploadImage(e) {
-  //   const thumbs = Array.from(e.target.files).map((file) => {
-  //     return URL.createObjectURL(file);
-  //   });
-  //   setThumbnails(thumbs);
-  //   const images = Array.from(e.target.files);
-  //   setImages(images);
-  // }
-
-  // function handleUploadFile(e) {
-  //   const files = Array.from(e.target.files);
-  //   setFiles((prev) => [...prev, ...files]);
-  // }
-
   function handleRemoveFile(fileId) {
     setFiles((prev) => prev.filter((file) => file.id !== fileId));
   }
-
-  // function handleSelectEmoji(e) {
-  //   setInput((prev) => `${prev} ${e.emoji}`);
-  // }
 
   useEffect(() => {
     const handleClickOutside = (e) => {
@@ -243,6 +215,7 @@ export default function Messages() {
               <hr />
             </div>
           </div>
+          
           <div className="messages__list">
             {isLoadingBatch && (
               <PulseLoader color="#6690ea" className="loader" />
@@ -259,6 +232,21 @@ export default function Messages() {
                 );
               })}
           </div>
+          <MessageInput
+        setInput={setInput}
+        openEmojiPickerBtnRef={openEmojiPickerBtnRef}
+        emojiPickerIsOpen={emojiPickerIsOpen}
+        images={images}
+        files={files}
+        input={input}
+        setImages={setImages}
+        otherIsTyping={otherIsTyping}
+        chatId={chatId}
+        setFiles={setFiles}
+        setThumbnails={setThumbnails}
+        setEmojiPickerIsOpen={setEmojiPickerIsOpen}
+        emojiPickerRef={emojiPickerRef}
+      />
         </div>
       )}
       {thumbnails.length > 0 && (
@@ -277,8 +265,8 @@ export default function Messages() {
       {files.length > 0 && (
         <div className="files">
           {files.map((file, i) => (
-            <div key={file.name}>
-              <AiOutlineFile size={50} />
+            <div key={Math.random()}>
+              <AiFillFile color={thisUser.theme === 'light' ? '#1755a2':'white'} size={30} />
               <span>{file.name}</span>
               <IoIosCloseCircleOutline
                 size={25}
@@ -289,19 +277,6 @@ export default function Messages() {
           ))}
         </div>
       )}
-      <MessageInput
-        setInput={setInput}
-        openEmojiPickerBtnRef={openEmojiPickerBtnRef}
-        emojiPickerIsOpen={emojiPickerIsOpen}
-        images={images}
-        files={files}
-        input={input}
-        setImages={setImages}
-        otherIsTyping={otherIsTyping}
-        chatId={chatId}
-        setFiles={setFiles}
-        setThumbnails={setThumbnails}
-      />
     </div>
   );
 }

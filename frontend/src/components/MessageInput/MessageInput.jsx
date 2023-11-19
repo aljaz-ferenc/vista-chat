@@ -20,19 +20,15 @@ export default function MessageInput({
   otherIsTyping,
   chatId,
   setFiles,
-  setThumbnails
+  setThumbnails,
+  setEmojiPickerIsOpen,
+  emojiPickerRef,
 }) {
   const imageInputRef = useRef();
   const fileInputRef = useRef();
   const inputFieldRef = useRef();
 
-  const {
-    user: thisUser,
-    resetCurrentChat,
-    updateChat,
-    setCurrentChat,
-    addBatch,
-  } = useUser();
+  const { user: thisUser } = useUser();
 
   async function handleSendMessage(e) {
     e.preventDefault();
@@ -61,14 +57,16 @@ export default function MessageInput({
     const thumbs = Array.from(e.target.files).map((file) => {
       return URL.createObjectURL(file);
     });
-    setThumbnails(thumbs);
-    const images = Array.from(e.target.files);
-    setImages(images);
+    setThumbnails(prev => [...prev, ...thumbs]);
+    const newImages = [...images, ...Array.from(e.target.files)];
+    setImages(newImages);
+    e.target.value = null;
   }
 
   function handleUploadFile(e) {
-    const files = Array.from(e.target.files);
-    setFiles((prev) => [...prev, ...files]);
+    const newFiles = Array.from(e.target.files);
+    setFiles((prev) => Array.from(new Set([...prev, ...newFiles])));
+    e.target.value = null;
   }
 
   function handleSelectEmoji(e) {
@@ -76,64 +74,69 @@ export default function MessageInput({
   }
 
   return (
-    <form onSubmit={handleSendMessage} className="messages-input">
-      <input
-        onChange={(e) => setInput(e.target.value)}
-        value={input}
-        type="text"
-        ref={inputFieldRef}
-      />
-      <button type="submit" className="send-message-btn">
-        <FaPaperPlane className="icon" color="#fff" />
-      </button>
-      <button className="upload-img-btn" type="button">
-        <BsImages
-          onClick={() => imageInputRef.current.click()}
-          color="#6690ea"
-          size={25}
-        />
-      </button>
+    <div className="messages-input-container">
+      <div className="message-buttons">
+        <button className="upload-img-btn" type="button">
+          <BsImages
+            onClick={() => imageInputRef.current.click()}
+            color="#6690ea"
+            size={25}
+          />
+        </button>
 
-      <button className="upload-file-btn" type="button">
-        <PiFilesLight
-          onClick={() => fileInputRef.current.click()}
-          color="#6690ea"
-          size={30}
-        />
-      </button>
+        <button className="upload-file-btn" type="button">
+          <PiFilesLight
+            onClick={() => fileInputRef.current.click()}
+            color="#6690ea"
+            size={30}
+          />
+        </button>
 
-      <button
-        className="emojis-btn"
-        type="button"
-        onClick={() => setEmojiPickerIsOpen(true)}
-        ref={openEmojiPickerBtnRef}
-      >
-        <BsEmojiSmile color="#6690ea" size={25} />
-      </button>
-      <input
-        onChange={handleUploadImage}
-        accept="image/*"
-        ref={imageInputRef}
-        type="file"
-        hidden
-        multiple
-      />
-      <input
-        onChange={handleUploadFile}
-        accept="audio/*, video/*, text/*, application/pdf"
-        ref={fileInputRef}
-        type="file"
-        hidden
-        multiple
-      />
-      {emojiPickerIsOpen && (
-        <div className="emoji-picker" ref={emojiPickerRef}>
-          <EmojiPicker onEmojiClick={handleSelectEmoji} />
-        </div>
-      )}
-      {otherIsTyping && (
-        <p className="is-typing">{otherUser.name} is typing...</p>
-      )}
-    </form>
+        <button
+          className="emojis-btn"
+          type="button"
+          onClick={() => setEmojiPickerIsOpen(true)}
+          ref={openEmojiPickerBtnRef}
+        >
+          <BsEmojiSmile color="#6690ea" size={25} />
+        </button>
+      </div>
+      <form onSubmit={handleSendMessage} className="messages-input">
+        <input
+          onChange={(e) => setInput(e.target.value)}
+          value={input}
+          type="text"
+          ref={inputFieldRef}
+        />
+        <button type="submit" className="send-message-btn">
+          <FaPaperPlane className="icon" color="#fff" />
+        </button>
+
+        <input
+          onChange={handleUploadImage}
+          accept="image/*"
+          ref={imageInputRef}
+          type="file"
+          hidden
+          multiple
+        />
+        <input
+          onChange={handleUploadFile}
+          accept="audio/*, video/*, text/*, application/pdf"
+          ref={fileInputRef}
+          type="file"
+          hidden
+          multiple
+        />
+        {emojiPickerIsOpen && (
+          <div className="emoji-picker" ref={emojiPickerRef}>
+            <EmojiPicker onEmojiClick={handleSelectEmoji} />
+          </div>
+        )}
+        {otherIsTyping && (
+          <p className="is-typing">{otherUser.name} is typing...</p>
+        )}
+      </form>
+    </div>
   );
 }

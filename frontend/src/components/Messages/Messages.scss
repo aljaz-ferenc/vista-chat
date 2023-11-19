@@ -3,21 +3,21 @@
 
 .messages {
   width: 100%;
-  height: calc(100% - 5em);
+  height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   padding-top: 2rem;
   @include scrollbar;
   background-color: var(--color-messages-background);
-  overflow-y: scroll;
+  position: relative;
   &__top {
     .user-info {
       display: flex;
       align-items: center;
       flex-direction: column;
       gap: 2rem;
-      p{
+      p {
         text-align: center;
       }
       .avatar {
@@ -28,8 +28,10 @@
   }
 
   &__main {
-    padding: 0 2rem;
+    overflow-y: scroll;
     height: 100%;
+    padding: 0 2rem;
+    margin-bottom: 3rem;
     & .loader {
       margin: 2rem auto;
     }
@@ -45,6 +47,7 @@
     flex-wrap: wrap;
     gap: 0.5rem;
     margin: 0 1rem;
+    margin-bottom: 2.5rem;
   }
   .emoji-picker {
     position: absolute;
@@ -52,10 +55,14 @@
     transform: translate(0, -100%);
   }
   .files {
-    background-color: rgba(0, 0, 0, 0.151);
+    background-color: var(--color-messages-background);
     cursor: default;
+    // padding-bottom: 2.5rem;
+    position: absolute;
+    bottom: 2.5rem;
+    width: 100%;
     & > div {
-      padding: 1rem;
+      padding: 0.2rem 1rem;
       display: flex;
       align-items: center;
       gap: 1rem;
@@ -79,7 +86,7 @@
       font-size: 0.9rem !important;
       .user-info {
         gap: 1rem;
-        p{
+        p {
           line-height: 1.2;
         }
         .avatar {
