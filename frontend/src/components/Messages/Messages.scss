@@ -79,6 +79,10 @@
 @media (max-width: 768px) {
   .messages {
     padding-top: 1rem;
+    overflow-y: scroll;
+    &__main{
+      overflow-y:scroll;
+    }
     &__top {
       gap: 1rem;
       font-size: 0.9rem !important;
