@@ -4,8 +4,6 @@ Vista Chat is a real-time messaging platform designed to facilitate seamless com
 
 ![Screenshot](./readme-images/app.png)
 
----
-
 ## Technologies Used
 
 - **Frontend**: React.js
