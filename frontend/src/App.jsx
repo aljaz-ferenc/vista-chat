@@ -3,7 +3,6 @@ import {
   Route,
   RouterProvider,
   createRoutesFromElements,
-  useNavigate,
 } from "react-router";
 import { createBrowserRouter } from "react-router-dom";
 import Login from "./pages/Login/Login";
@@ -14,7 +13,6 @@ import Settings from "./pages/Settings/Settings";
 import Messages from "./components/Messages/Messages";
 import { useEffect } from "react";
 import Profile from "./pages/Profile/Profile";
-import { authenticateUser } from "./api/api";
 import { setThemeColors } from "./utils/functions";
 
 const router = createBrowserRouter(

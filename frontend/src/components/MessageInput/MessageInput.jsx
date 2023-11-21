@@ -27,8 +27,9 @@ export default function MessageInput({
   const imageInputRef = useRef();
   const fileInputRef = useRef();
   const inputFieldRef = useRef();
-
   const { user: thisUser } = useUser();
+  const chat = thisUser.chats.find(chat => chat._id === chatId)
+  const otherUser = chat.users.find((u) => u._id !== thisUser.id);
 
   async function handleSendMessage(e) {
     e.preventDefault();

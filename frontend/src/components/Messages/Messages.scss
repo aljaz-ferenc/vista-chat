@@ -8,6 +8,7 @@
   flex-direction: column;
   justify-content: space-between;
   padding-top: 2rem;
+  padding-bottom: 1rem;
   @include scrollbar;
   background-color: var(--color-messages-background);
   position: relative;

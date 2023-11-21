@@ -64,7 +64,7 @@ export default function Message({ message, users, messages }) {
             {images.map((img, i) => {
               return (
                 <img
-                  key={img.i}
+                  key={img.id}
                   onClick={() => setSelectedImage(img.url)}
                   src={img.url}
                 />
