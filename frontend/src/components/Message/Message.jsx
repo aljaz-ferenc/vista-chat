@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { useUser } from "../../UserContext";
 import "./Message.scss";
 import FullscreenImage from "../FullscreenImage/FullscreenImage";

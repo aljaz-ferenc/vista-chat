@@ -1,5 +1,6 @@
 .avatar-container {
   position: relative;
+  width: min-content;
   &__online-status {
     position: absolute;
     bottom: -0.3rem;

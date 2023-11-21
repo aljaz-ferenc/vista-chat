@@ -77,7 +77,6 @@
         position: absolute;
         bottom: -1rem;
         left: 1rem;
-        // transform: translate(100%, 100%);
       }
     }
     & .avatar-container {
@@ -105,9 +104,9 @@
       line-height: 1.3;
     }
     &.others {
-      & .avatar-container {
-        left: -2.5rem;
-      }
+      // & .avatar {
+      //   left: -2.5rem;
+      // }
       & .content {
         &__time {
           left: 0;
@@ -116,9 +115,9 @@
       }
     }
     &.mine {
-      & .avatar-container {
-        right: -2.5rem;
-      }
+      // & .avatar {
+      //   right: -2.5rem;
+      // }
       & .content {
         &__time {
           font-size: 0.6rem;
