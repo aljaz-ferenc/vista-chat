@@ -6,7 +6,7 @@ const blacklistedTokens = require('../blacklist')
 
 exports.loginUser = async (req, res) => {
     const { email, password } = req.body
-
+    console.log('loginUser: ', email)
     try {
         const user = await User.findOne({ email }).select('+password')
 
@@ -40,7 +40,7 @@ exports.loginUser = async (req, res) => {
 
 exports.authenticateUser = async (req, res) => {
     const token = req.cookies.chatAppJWT
-
+    console.log('authenticateUser: ', token)
     try {
         if (blacklistedTokens.includes(token)) throw new Error('Token blacklisted')
         const encoded = jwt.verify(token, process.env.JWT_SECRET)
