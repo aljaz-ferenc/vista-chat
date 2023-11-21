@@ -10,7 +10,13 @@ export function formatDate(date) {
 
 export function formatMessageTimestamp(date){
     const time = new Date(date)
-    return `${time.getHours()}:${time.getMinutes()}`
+    const now = new Date()
+
+    if(now.getTime() - time.getTime() > 24 * 60 * 60 * 1000){
+        return String(time.toDateString()).slice(0, -5)
+    }
+
+    return `${String(time.getHours()).padStart(2, '0')} : ${String(time.getMinutes()).padStart(2, '0')}`
 }
 
 export function setThemeColors(theme) {

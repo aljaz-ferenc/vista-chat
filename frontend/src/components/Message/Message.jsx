@@ -35,10 +35,18 @@ export default function Message({ message, users, messages }) {
     if (messages[index - 1]?.user === author._id) return false;
     return true;
   }
+  function isLastFromUser() {
+    const index = messages.findIndex((msg) => msg._id === message._id);
+
+    if (messages[index + 1]?.user === author._id) return false;
+    return true;
+  }
   const isFirst = isFirstFromUser();
+  const isLast = isLastFromUser();
 
   return (
     <div
+    style={{marginBottom: isLast ? '2rem' : '0'}}
       className={`message ${author._id === thisUser.id ? "mine" : "others"}`}
       ref={messageRef}
     >
@@ -60,9 +68,9 @@ export default function Message({ message, users, messages }) {
           onClick={handleDeleteMessage}
         />
 
-        <span className="content__time">
+        {isLast && <span className="content__time">
           {formatMessageTimestamp(message.timestamp)}
-        </span>
+        </span>}
         {images.length > 0 && (
           <div className="content__images">
             {images.map((img, i) => {
