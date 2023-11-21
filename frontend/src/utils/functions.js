@@ -8,6 +8,11 @@ export function formatDate(date) {
     return new Date(date).toISOString().split('T')[0];
 }
 
+export function formatMessageTimestamp(date){
+    const time = new Date(date)
+    return `${time.getHours()}:${time.getMinutes()}`
+}
+
 export function setThemeColors(theme) {
     switch (theme) {
         case 'light':

@@ -6,7 +6,7 @@
   color: #fff;
   padding: 0.2rem 1rem;
   position: relative;
-  margin-bottom: 1rem;
+  margin-bottom: 2rem;
   cursor: default;
   .content {
     max-width: 35rem;
@@ -36,6 +36,7 @@
         color: inherit;
       }
     }
+   
   }
 
   &:hover .delete-btn {
@@ -56,6 +57,13 @@
     & .content {
       color: var(--color-text);
       background-color: var(--color-my-message);
+      &__time{
+        font-size: .7rem;
+        position: absolute;
+        bottom: 0;
+        right: -.5rem;
+        transform: translate(-100%, 100%);
+      }
     }
     & .avatar-container {
       right: -1.5rem;
@@ -67,6 +75,13 @@
     flex-direction: row;
     & .content {
       background-color: var(--color-other-message);
+      &__time{
+        font-size: .7rem;
+        position: absolute;
+        bottom: 0;
+        left: -.5rem;
+        transform: translate(100%, 100%);
+      }
     }
     & .avatar-container {
       left: -1.5rem;
@@ -91,6 +106,22 @@
       font-size: 0.8rem !important;
       padding: 0.3rem 0.5rem;
       line-height: 1.3;
+    }
+    &.others{
+      & .content{
+        &__time{
+          left: -1.5rem;
+          font-size: .6rem;
+        }
+      }
+    }
+    &.mine{
+      & .content{
+        &__time{
+          font-size: .6rem;
+          right: -1.5rem;
+        }
+      }
     }
   }
 }

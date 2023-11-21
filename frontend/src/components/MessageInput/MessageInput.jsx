@@ -134,7 +134,7 @@ export default function MessageInput({
             <EmojiPicker onEmojiClick={handleSelectEmoji} />
           </div>
         )}
-        {otherIsTyping && (
+        {otherIsTyping && otherUser && (
           <p className="is-typing">{otherUser.name} is typing...</p>
         )}
       </form>

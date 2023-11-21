@@ -7,6 +7,7 @@ import { AiFillFile } from "react-icons/ai";
 import { deleteMessage } from "../../api/api";
 import { deleteFiles, deleteImages } from "../../../firebase";
 import Avatar from "../Avatar/Avatar";
+import { formatMessageTimestamp } from "../../utils/functions";
 
 export default function Message({ message, users, messages }) {
   const { content: text, user, images, files } = message;
@@ -59,6 +60,9 @@ export default function Message({ message, users, messages }) {
           onClick={handleDeleteMessage}
         />
 
+        <span className="content__time">
+          {formatMessageTimestamp(message.timestamp)}
+        </span>
         {images.length > 0 && (
           <div className="content__images">
             {images.map((img, i) => {
