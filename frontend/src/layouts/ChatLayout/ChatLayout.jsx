@@ -9,6 +9,7 @@ import { useUser } from "../../UserContext";
 import NewChat from "../../components/NewChat/NewChat";
 import Avatar from "../../components/Avatar/Avatar";
 import useAuthAndUpdateUser from "../../utils/useAuthAndUpdateUser";
+import { HashLoader } from "react-spinners";
 
 export default function ChatLayout() {
   const { user, setAuthStatus, resetContext } = useUser();
@@ -27,7 +28,7 @@ export default function ChatLayout() {
     });
   }
 
-  if (!user.name) return <div>Loading...</div>;
+  if (!user.name) return <div className="loading"><HashLoader color="#465cc8"/></div>;
 
   return (
     <div className="chat-layout">

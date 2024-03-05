@@ -1,9 +1,18 @@
 @import "../../sass/mixins.scss";
 
+.loading{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
 .login-form {
   color: inherit;
   @include form(2.5rem);
-
+  .error {
+    color: red;
+  }
   &__test{
     line-height: 1.2;
     margin: 1rem;
@@ -32,12 +41,7 @@
 @media (max-width: 1024px) {
   .login-form {
     max-width: 90%;
-    .error {
-      color: red;
-      position: absolute;
-      top: -2rem;
-      left: 0;
-    }
+    
     
     h2 {
       font-size: 2.5rem;
