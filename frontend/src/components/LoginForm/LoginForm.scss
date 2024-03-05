@@ -8,7 +8,6 @@
     line-height: 1.2;
     margin: 1rem;
     max-width: 20rem;
-    border: 2px solid rgb(223, 43, 43);
     padding: .5rem;
     &--users{
       margin-top: 1rem;
@@ -17,7 +16,10 @@
       gap: 1rem;
       button{
         @include button;
-        background-color: #1755a2;
+        background-color: #1756a27d;
+        &:hover{
+          background-color: #1756a2bf;
+        }
       }
     }
     & p{

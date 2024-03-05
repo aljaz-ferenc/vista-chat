@@ -44,17 +44,12 @@ export default function LoginForm({ setState }) {
   return (
     <div className="login-form">
       <div className="login-form__test">
-        {/* <p>
-          For <strong>testing</strong>, you can open the app in two browsers and login with
-          two different test users.
-        </p>
         <p>
-          Feel free to send messages. A message can be deleted and removed from the database by
-          hovering over it and clicking <AiFillCloseCircle />.
-        </p> */}
+          For testing purposes, use the two demo accounts in two different browsers.
+        </p>
         <div className="login-form__test--users">
-          <button onClick={setTestData1}>Test User 1</button>
-          <button onClick={setTestData2}>Test User 2</button>
+          <button onClick={setTestData1}>Demo User 1</button>
+          <button onClick={setTestData2}>Demo User 2</button>
         </div>
       </div>
       <h2>Login</h2>
