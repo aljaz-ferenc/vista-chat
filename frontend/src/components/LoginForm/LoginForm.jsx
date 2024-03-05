@@ -6,15 +6,18 @@ import { useNavigate } from "react-router-dom";
 import useAuthAndUpdateUser from "../../utils/useAuthAndUpdateUser";
 import { useState } from "react";
 import { AiFillCloseCircle } from "react-icons/ai";
+import { BeatLoader } from 'react-spinners';
 
 export default function LoginForm({ setState }) {
   const { register, handleSubmit, setValue } = useForm();
   const navigate = useNavigate();
   const [error, setError] = useState("");
+  const [isFetching, setIsFetching] = useState(false)
 
   useAuthAndUpdateUser();
 
   function submitForm(formData) {
+    setIsFetching(true)
     loginUser(formData)
       .then((res) => {
         if (res.status === "success") navigate("/chat/messages");
@@ -24,7 +27,8 @@ export default function LoginForm({ setState }) {
       })
       .catch((err) => {
         setError(err.message);
-      });
+      })
+      .finally(() => setIsFetching(false))
   }
 
   function setTestData1() {
@@ -40,14 +44,14 @@ export default function LoginForm({ setState }) {
   return (
     <div className="login-form">
       <div className="login-form__test">
-        <p>
+        {/* <p>
           For <strong>testing</strong>, you can open the app in two browsers and login with
           two different test users.
         </p>
         <p>
           Feel free to send messages. A message can be deleted and removed from the database by
           hovering over it and clicking <AiFillCloseCircle />.
-        </p>
+        </p> */}
         <div className="login-form__test--users">
           <button onClick={setTestData1}>Test User 1</button>
           <button onClick={setTestData2}>Test User 2</button>
@@ -76,13 +80,13 @@ export default function LoginForm({ setState }) {
             id="password"
           />
         </div>
-        <button>
+        {!isFetching ? <button>
           <small className="error">{error}</small>
           <span>
             <BsArrowRightCircleFill size={25} className="button-arrow" />
           </span>
           <span>Login</span>
-        </button>
+        </button>:<BeatLoader/>} 
       </form>
       <div className="form-sub">
         <span>Don't have an account? </span>

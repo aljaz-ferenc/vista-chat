@@ -18,7 +18,7 @@ mongoose.connect(DB).then(() => console.log('Databse connected successfully'))
 const app = express()
 
 app.use(cors({
-    origin: [process.env.CLIENT_URL, 'http://localhost:5173'],
+    origin: [process.env.CLIENT_URL, 'http://localhost:5173', 'https://aljaz-ferenc.netlify.app'],
     credentials: true,
 }))
 app.use(cookieParser())

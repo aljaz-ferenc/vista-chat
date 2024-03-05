@@ -4,13 +4,16 @@ import { useForm } from "react-hook-form";
 import { registerUser } from "../../api/api";
 import { useNavigate } from "react-router";
 import { useState } from "react";
+import { BeatLoader } from "react-spinners";
 
 export default function RegisterForm({ setState }) {
   const { register, handleSubmit } = useForm();
   const navigate = useNavigate();
   const [error, setError] = useState("");
+  const [isFetching, setIsFetching] = useState(false)
 
   function submitForm(formData) {
+    setIsFetching(true)
     registerUser(formData)
       .then((res) => {
         if (res.status === "success") navigate("/chat/profile");
@@ -18,7 +21,8 @@ export default function RegisterForm({ setState }) {
       })
       .catch((err) => {
         setError(err.message);
-      });
+      })
+      .finally(() => setIsFetching(false))
   }
 
   return (
@@ -46,13 +50,13 @@ export default function RegisterForm({ setState }) {
             id="password-confirm"
           />
         </div>
-        <button>
+        {isFetching ? <BeatLoader/>:<button>
           <span>Register</span>
           <span>
             <BsArrowRightCircleFill size={25} />
           </span>
           <small className="error">{error}</small>
-        </button>
+        </button>}
       </form>
       <div className="form-sub">
         <span>Already have an account? </span>

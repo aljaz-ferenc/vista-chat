@@ -38,6 +38,16 @@ Enjoy real-time message delivery through web sockets using the Socket&#46;io lib
 Share images and files seamlessly within conversations, securely stored in Firebase's Storage for a richer chat experience.
 ![Shared Images](./readme-images/images.png)
 
+### Updating Profile
+
+On the Profile page, you can change your public information and your avatar.
+![Update Profile](./readme-images/profile.png)
+
+### Account Management
+
+Users can switch between light and dark theme, change their password or delete the account on the Settings page.
+![Settings](./readme-images/settings.png)
+
 ## Try It Out
 
 [Test the app here](https://vista-chat-af.netlify.app/login) with provided demo users for a real-time chat experience. Open two different browsers, log in with one test user each, and interact between users. Explore the app's features by sending messages and observing live updates.
