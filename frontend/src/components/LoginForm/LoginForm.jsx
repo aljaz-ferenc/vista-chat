@@ -81,10 +81,10 @@ export default function LoginForm({ setState }) {
         {error && <small className="error">{error}</small>}
         {!isFetching ? (
           <button>
+            <span>Login</span>
             <span>
               <BsArrowRightCircleFill size={25} className="button-arrow" />
             </span>
-            <span>Login</span>
           </button>
         ) : (
           <BeatLoader />

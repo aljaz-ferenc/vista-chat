@@ -1,5 +1,5 @@
 import "./Login.scss";
-import image from "../../assets/login-img.png";
+import image from "../../assets/login-img2.svg";
 
 import LoginForm from "../../components/LoginForm/LoginForm";
 import RegisterForm from "../../components/RegisterForm/RegisterForm";

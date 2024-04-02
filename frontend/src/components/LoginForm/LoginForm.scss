@@ -10,6 +10,9 @@
 .login-form {
   color: inherit;
   @include form(2.5rem);
+  border: 1px solid rgba(118, 116, 116, 0.393);
+  padding: 2rem;
+  border-radius: 20px;
   .error {
     color: red;
   }
